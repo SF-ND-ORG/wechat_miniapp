@@ -1,0 +1,10 @@
+<view style="display: flex; gap: 8px; flex-direction: column;">
+  <input placeholder="搜索歌曲" bindinput="onSearchInput" class="search-bar"/>
+  <button bindtap="onSearch" type="primary">搜索</button>
+  <view wx:for="{{results}}" wx:key="id" class="song-list">
+    <view style="display: flex; padding: 6px;" class="song-item">
+      <text style="width: 70%;" class="song-title">{{item.name}} - {{item.artists}}</text>
+      <button class="request-btn" data-id="{{item.id}}" bindtap="onRequestSong" size="mini" >点歌</button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,74 @@
+/* 点歌页面样式 */
+.page {
+    background: #f6f8fa;
+    min-height: 100vh;
+    padding: 32rpx 0;
+  }
+  
+  .search-bar {
+    display: flex;
+    gap: 16rpx;
+    align-items: center;
+    margin: 0 24rpx 24rpx 24rpx;
+  }
+  
+  input {
+    flex: 1;
+    height: 80rpx;
+    font-size: 30rpx;
+    border: 1px solid #e0e0e0;
+    border-radius: 8rpx;
+    padding-left: 22rpx;
+    background: #fff;
+  }
+
+  
+  .song-list {
+    margin: 0 24rpx;
+    display: flex;
+    flex-direction: column;
+    gap: 20rpx;
+  }
+  
+  .song-item {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 12rpx;
+    box-shadow: 0 2rpx 12rpx 0 rgba(0,0,0,0.04);
+    padding: 20rpx;
+    justify-content: space-between;
+  }
+  
+  .song-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6rpx;
+  }
+  
+  .song-title {
+    font-size: 32rpx;
+    font-weight: 500;
+    color: #222;
+  }
+  
+  .song-artist {
+    font-size: 26rpx;
+    color: #616161;
+  }
+  
+  .song-album {
+    font-size: 24rpx;
+    color: #a0a0a0;
+  }
+  
+  .request-btn {
+    margin-left: 18rpx;
+    padding: 0 24rpx;
+    height: 60rpx;
+    background: #ff9800;
+    color: #fff;
+    font-size: 26rpx;
+    border-radius: 8rpx;
+  }
