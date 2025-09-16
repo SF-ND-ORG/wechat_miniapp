@@ -1,0 +1,62 @@
+<view class="wall-container">
+  <!-- 顶部操作栏 -->
+  <view class="top-bar">
+    <view class="filter-tabs">
+      <text class="tab {{currentType === 'all' ? 'active' : ''}}" bindtap="onTypeChange" data-type="all">全部</text>
+      <text class="tab {{currentType === 'general' ? 'active' : ''}}" bindtap="onTypeChange" data-type="general">普通</text>
+      <text class="tab {{currentType === 'lost_and_found' ? 'active' : ''}}" bindtap="onTypeChange" data-type="lost_and_found">失物</text>
+      <text class="tab {{currentType === 'confession' ? 'active' : ''}}" bindtap="onTypeChange" data-type="confession">表白</text>
+      <text class="tab {{currentType === 'help' ? 'active' : ''}}" bindtap="onTypeChange" data-type="help">求助</text>
+    </view>
+    <view class="action-buttons">
+      <button class="admin-btn" wx:if="{{isAdmin}}" bindtap="goToAdmin" size="mini" type="default">管理</button>
+      <button class="post-btn" bindtap="goToPost" type="primary" size="mini">发布</button>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-container">
+    <input class="search-input" placeholder="搜索内容..." bindinput="onSearchInput" value="{{searchKeyword}}" />
+    <button class="search-btn" bindtap="onSearch" size="mini">搜索</button>
+  </view>
+
+  <!-- 消息列表 -->
+  <view class="message-list">
+    <view wx:for="{{messages}}" wx:key="id" class="message-item" bindtap="goToDetail" data-id="{{item.id}}">
+      <view class="message-header">
+        <view class="message-type">
+          <text class="type-tag type-{{item.message_type}}">{{getTypeText(item.message_type)}}</text>
+        </view>
+        <view class="message-time">{{formatTime(item.timestamp)}}</view>
+      </view>
+      
+      <view class="message-title" wx:if="{{item.title}}">{{item.title}}</view>
+      <view class="message-content">{{item.content}}</view>
+      
+      <view class="message-meta" wx:if="{{item.location || item.contact_info}}">
+        <text wx:if="{{item.location}}" class="meta-item">📍 {{item.location}}</text>
+        <text wx:if="{{item.contact_info}}" class="meta-item">📞 {{item.contact_info}}</text>
+      </view>
+      
+      <view class="message-footer">
+        <view class="stats">
+          <text class="stat-item">👀 {{item.view_count}}</text>
+          <text class="stat-item">👍 {{item.like_count}}</text>
+        </view>
+        <view class="tags" wx:if="{{item.tags}}">
+          <text class="tag" wx:for="{{parseTags(item.tags)}}" wx:key="*this">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && messages.length === 0}}">
+    <text>暂无消息</text>
+  </view>
+</view>

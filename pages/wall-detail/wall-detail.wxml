@@ -1,0 +1,68 @@
+<view class="detail-container" wx:if="{{message}}">
+  <!-- 消息头部 -->
+  <view class="message-header">
+    <view class="type-info">
+      <text class="type-tag type-{{message.message_type}}">{{getTypeText(message.message_type)}}</text>
+    </view>
+    <view class="time-info">{{formatTime(message.timestamp)}}</view>
+  </view>
+
+  <!-- 消息标题 -->
+  <view class="message-title" wx:if="{{message.title}}">{{message.title}}</view>
+
+  <!-- 消息内容 -->
+  <view class="message-content">{{message.content}}</view>
+
+  <!-- 元信息 -->
+  <view class="meta-info" wx:if="{{message.location || message.contact_info}}">
+    <view class="meta-item" wx:if="{{message.location}}">
+      <text class="meta-label">📍 位置：</text>
+      <text class="meta-value">{{message.location}}</text>
+    </view>
+    <view class="meta-item" wx:if="{{message.contact_info}}">
+      <text class="meta-label">📞 联系：</text>
+      <text class="meta-value selectable" user-select="{{true}}">{{message.contact_info}}</text>
+    </view>
+  </view>
+
+  <!-- 标签 -->
+  <view class="tags-section" wx:if="{{message.tags}}">
+    <text class="section-title">标签</text>
+    <view class="tags">
+      <text class="tag" wx:for="{{parseTags(message.tags)}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 统计信息 -->
+  <view class="stats-section">
+    <view class="stat-item">
+      <text class="stat-label">浏览次数</text>
+      <text class="stat-value">{{message.view_count}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">点赞次数</text>
+      <text class="stat-value">{{message.like_count}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <button class="action-btn like-btn" bindtap="onLike" disabled="{{liking}}">
+      👍 {{liking ? '点赞中...' : '点赞'}}
+    </button>
+    <button class="action-btn contact-btn" wx:if="{{message.contact_info}}" bindtap="copyContact">
+      📋 复制联系方式
+    </button>
+  </view>
+</view>
+
+<!-- 加载状态 -->
+<view class="loading" wx:if="{{loading}}">
+  <text>加载中...</text>
+</view>
+
+<!-- 错误状态 -->
+<view class="error" wx:if="{{error}}">
+  <text>{{error}}</text>
+  <button class="retry-btn" bindtap="loadMessage" size="mini">重试</button>
+</view>

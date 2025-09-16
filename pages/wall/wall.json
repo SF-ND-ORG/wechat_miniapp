@@ -1,0 +1,5 @@
+{
+    "navigationBarTitleText": "校园墙",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 50
+}

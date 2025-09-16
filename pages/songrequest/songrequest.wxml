@@ -1,10 +1,47 @@
-<view style="display: flex; gap: 8px; flex-direction: column;">
-  <input placeholder="搜索歌曲" bindinput="onSearchInput" class="search-bar"/>
-  <button bindtap="onSearch" type="primary">搜索</button>
-  <view wx:for="{{results}}" wx:key="id" class="song-list">
-    <view style="display: flex; padding: 6px;" class="song-item">
-      <text style="width: 70%;" class="song-title">{{item.name}} - {{item.artists}}</text>
-      <button class="request-btn" data-id="{{item.id}}" bindtap="onRequestSong" size="mini" data-name="{{item.name}}">点歌</button>
+<view class="page-container">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-content">
+      <text class="page-title">搜索歌曲</text>
+      <button class="my-requests-btn" bindtap="goToMyRequests">
+        <image class="btn-icon" src="/assets/imgs/StreamlineSharpSongRecommendation.png"></image>
+        <text class="btn-text">我的点歌</text>
+      </button>
+    </view>
+  </view>
+  
+  <!-- 搜索区域 -->
+  <view class="search-section">
+    <view class="search-input-container">
+      <input placeholder="搜索歌曲" bindinput="onSearchInput" class="search-bar" value="{{searchKeyword}}"/>
+      <button bindtap="onSearch" class="search-btn" disabled="{{!searchKeyword}}">搜索</button>
+    </view>
+  </view>
+  
+  <!-- 搜索结果 -->
+  <view class="results-section">
+    <view wx:for="{{results}}" wx:key="id" class="song-item">
+      <view class="song-info">
+        <text class="song-title">{{item.name}}</text>
+        <text class="song-artist">{{item.artists}}</text>
+      </view>
+      <button class="request-btn" data-id="{{item.id}}" bindtap="onRequestSong" data-name="{{item.name}}" loading="{{requestingId === item.id}}">
+        {{requestingId === item.id ? '点歌中...' : '点歌'}}
+      </button>
+    </view>
+    
+    <!-- 空状态 -->
+    <view wx:if="{{searched && results.length === 0}}" class="empty-state">
+      <image class="empty-icon" src="/assets/imgs/empty-search.png"></image>
+      <text class="empty-text">没有找到相关歌曲</text>
+      <text class="empty-desc">换个关键词试试吧</text>
+    </view>
+    
+    <!-- 初始状态 -->
+    <view wx:if="{{!searched && results.length === 0}}" class="initial-state">
+      <image class="initial-icon" src="/assets/imgs/MaterialSymbolsSearchRounded.png"></image>
+      <text class="initial-text">搜索你喜欢的歌曲</text>
+      <text class="initial-desc">输入歌名或歌手名开始搜索</text>
     </view>
   </view>
 </view>

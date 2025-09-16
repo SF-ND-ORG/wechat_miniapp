@@ -1,0 +1,213 @@
+<!-- 点歌管理页面 -->
+<view class="song-manage-container">
+  <!-- 统计卡片 -->
+  <view class="stats-cards">
+    <view class="stat-card">
+      <text class="stat-number">{{queueCount}}</text>
+      <text class="stat-label">播放队列</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-number">{{totalRequests}}</text>
+      <text class="stat-label">总点歌数</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-number">{{currentSong ? '播放中' : '空闲'}}</text>
+      <text class="stat-label">播放状态</text>
+    </view>
+  </view>
+
+  <!-- 当前播放 -->
+  <view class="current-playing" wx:if="{{currentSong}}">
+    <view class="section-title">
+      <text class="title-text">正在播放</text>
+      <text class="playing-indicator">🎵</text>
+    </view>
+    <view class="song-card current">
+      <view class="song-info">
+        <text class="song-title">{{currentSong.title}}</text>
+        <text class="song-artist">{{currentSong.artist}}</text>
+        <text class="song-requester">点歌人: {{currentSong.requester_name}}</text>
+      </view>
+      <view class="song-actions">
+        <button class="action-btn skip-btn" bindtap="skipSong">跳过</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 播放队列 -->
+  <view class="queue-section">
+    <view class="section-header">
+      <text class="section-title">播放队列 ({{queueList.length}})</text>
+      <button class="manage-btn" bindtap="clearQueue" wx:if="{{queueList.length > 0}}">
+        清空队列
+      </button>
+    </view>
+
+    <scroll-view class="queue-list" scroll-y="{{true}}" wx:if="{{queueList.length > 0}}">
+      <view class="song-card" wx:for="{{queueList}}" wx:key="id" wx:for-index="index">
+        <view class="queue-number">{{index + 1}}</view>
+        <view class="song-info">
+          <text class="song-title">{{item.title}}</text>
+          <text class="song-artist">{{item.artist}}</text>
+          <text class="song-requester">点歌人: {{item.requester_name}}</text>
+          <text class="song-time">{{formatTime(item.created_at)}}</text>
+        </view>
+        <view class="song-actions">
+          <button class="action-btn priority-btn" bindtap="setPriority" data-id="{{item.id}}">
+            置顶
+          </button>
+          <button class="action-btn remove-btn" bindtap="removeFromQueue" data-id="{{item.id}}">
+            移除
+          </button>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="empty-queue" wx:if="{{queueList.length === 0}}">
+      <text class="empty-icon">🎵</text>
+      <text class="empty-text">播放队列为空</text>
+      <text class="empty-desc">用户点歌后会自动添加到队列</text>
+    </view>
+  </view>
+
+  <!-- 歌曲审核 -->
+  <view class="review-section">
+    <view class="section-header">
+      <text class="section-title">歌曲审核</text>
+      <view class="filter-buttons">
+        <button class="filter-btn {{reviewFilter === 'pending' ? 'active' : ''}}" 
+                bindtap="switchReviewFilter" data-filter="pending">
+          待审核
+        </button>
+        <button class="filter-btn {{reviewFilter === 'approved' ? 'active' : ''}}" 
+                bindtap="switchReviewFilter" data-filter="approved">
+          已通过
+        </button>
+        <button class="filter-btn {{reviewFilter === 'rejected' ? 'active' : ''}}" 
+                bindtap="switchReviewFilter" data-filter="rejected">
+          已拒绝
+        </button>
+      </view>
+    </view>
+
+    <scroll-view class="review-list" scroll-y="{{true}}" refresher-enabled="{{true}}"
+                 refresher-triggered="{{refreshingReview}}" bindrefresherrefresh="onRefreshReview"
+                 bindscrolltolower="loadMoreReviews">
+      
+      <view class="song-card review" wx:for="{{reviewList}}" wx:key="id">
+        <view class="song-info">
+          <text class="song-title">{{item.song_name}}</text>
+          <text class="song-requester">点歌人: {{item.user_name}} ({{item.user_student_id}})</text>
+          <text class="song-time">{{formatTime(item.request_time)}}</text>
+          <text class="review-reason" wx:if="{{item.review_reason}}">理由: {{item.review_reason}}</text>
+        </view>
+        <view class="song-actions" wx:if="{{item.status === 'pending'}}">
+          <button class="action-btn approve-btn" bindtap="approveSong" data-id="{{item.id}}">
+            通过
+          </button>
+          <button class="action-btn reject-btn" bindtap="rejectSong" data-id="{{item.id}}">
+            拒绝
+          </button>
+        </view>
+        <view class="song-status" wx:else>
+          <text class="status-text status-{{item.status}}">{{getStatusText(item.status)}}</text>
+          <text class="review-time" wx:if="{{item.review_time}}">{{formatTime(item.review_time)}}</text>
+        </view>
+      </view>
+
+      <view class="loading-more" wx:if="{{loadingReview}}">
+        <text>加载中...</text>
+      </view>
+
+      <view class="no-more" wx:if="{{!hasMoreReviews && reviewList.length > 0}}">
+        <text>没有更多记录了</text>
+      </view>
+
+      <view class="empty-review" wx:if="{{!loadingReview && reviewList.length === 0}}">
+        <text class="empty-icon">🎵</text>
+        <text class="empty-text">{{reviewFilter === 'pending' ? '暂无待审核歌曲' : '暂无记录'}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 点歌历史 -->
+  <view class="history-section">
+    <view class="section-header">
+      <text class="section-title">点歌历史</text>
+      <view class="filter-buttons">
+        <button class="filter-btn {{historyFilter === 'all' ? 'active' : ''}}" 
+                bindtap="switchHistoryFilter" data-filter="all">
+          全部
+        </button>
+        <button class="filter-btn {{historyFilter === 'today' ? 'active' : ''}}" 
+                bindtap="switchHistoryFilter" data-filter="today">
+          今日
+        </button>
+      </view>
+    </view>
+
+    <scroll-view class="history-list" scroll-y="{{true}}" refresher-enabled="{{true}}"
+                 refresher-triggered="{{refreshing}}" bindrefresherrefresh="onRefresh"
+                 bindscrolltolower="loadMoreHistory">
+      
+      <view class="song-card history" wx:for="{{historyList}}" wx:key="id">
+        <view class="song-info">
+          <text class="song-title">{{item.title}}</text>
+          <text class="song-artist">{{item.artist}}</text>
+          <text class="song-requester">点歌人: {{item.requester_name}}</text>
+          <text class="song-time">{{formatTime(item.created_at)}}</text>
+        </view>
+        <view class="song-status">
+          <text class="status-text status-{{item.status}}">{{getStatusText(item.status)}}</text>
+        </view>
+      </view>
+
+      <view class="loading-more" wx:if="{{loadingHistory}}">
+        <text>加载中...</text>
+      </view>
+
+      <view class="no-more" wx:if="{{!hasMoreHistory && historyList.length > 0}}">
+        <text>没有更多记录了</text>
+      </view>
+
+      <view class="empty-history" wx:if="{{!loadingHistory && historyList.length === 0}}">
+        <text class="empty-icon">📝</text>
+        <text class="empty-text">暂无点歌记录</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 播放控制面板 -->
+  <view class="control-panel">
+    <button class="control-btn" bindtap="pausePlay">
+      {{isPlaying ? '暂停' : '播放'}}
+    </button>
+    <button class="control-btn" bindtap="nextSong">下一首</button>
+    <button class="control-btn" bindtap="toggleShuffle">
+      {{shuffleMode ? '取消随机' : '随机播放'}}
+    </button>
+  </view>
+
+  <!-- 审核理由弹窗 -->
+  <view class="modal-overlay" wx:if="{{showRejectModal}}" bindtap="hideRejectModal">
+    <view class="modal-content" catchtap="preventModalClose">
+      <view class="modal-header">
+        <text class="modal-title">拒绝理由</text>
+        <button class="modal-close" bindtap="hideRejectModal">×</button>
+      </view>
+      <view class="modal-body">
+        <textarea class="reason-input" 
+                  placeholder="请输入拒绝理由（选填）" 
+                  value="{{rejectReason}}" 
+                  bindinput="onReasonInput"
+                  maxlength="200">
+        </textarea>
+        <text class="char-count">{{rejectReason.length}}/200</text>
+      </view>
+      <view class="modal-footer">
+        <button class="modal-btn cancel" bindtap="hideRejectModal">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmReject">确认拒绝</button>
+      </view>
+    </view>
+  </view>
+</view>

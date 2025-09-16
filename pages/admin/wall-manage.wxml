@@ -1,0 +1,125 @@
+<!-- 校园墙管理页面 -->
+<view class="wall-manage-container">
+  
+  <!-- 顶部导航 -->
+  <view class="nav-header">
+    <view class="nav-back" bindtap="goBack">
+      <text class="back-icon">←</text>
+    </view>
+    <text class="nav-title">校园墙管理</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 统计卡片 -->
+  <view class="stats-cards">
+    <view class="stat-card">
+      <text class="stat-number">{{statistics.pending_count || 0}}</text>
+      <text class="stat-label">待审核</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-number">{{statistics.approved_count || 0}}</text>
+      <text class="stat-label">已通过</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-number">{{statistics.total_count || 0}}</text>
+      <text class="stat-label">总消息</text>
+    </view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-tabs">
+      <view class="filter-tab {{currentStatus === 'PENDING' ? 'active' : ''}}" 
+            bindtap="switchStatus" data-status="PENDING">
+        待审核
+      </view>
+      <view class="filter-tab {{currentStatus === 'APPROVED' ? 'active' : ''}}" 
+            bindtap="switchStatus" data-status="APPROVED">
+        已通过
+      </view>
+      <view class="filter-tab {{currentStatus === 'REJECTED' ? 'active' : ''}}" 
+            bindtap="switchStatus" data-status="REJECTED">
+        已拒绝
+      </view>
+      <view class="filter-tab {{currentStatus === 'ALL' ? 'active' : ''}}" 
+            bindtap="switchStatus" data-status="ALL">
+        全部
+      </view>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view class="message-list" scroll-y="{{true}}" refresher-enabled="{{true}}"
+               refresher-triggered="{{refreshing}}" bindrefresherrefresh="onRefresh"
+               bindscrolltolower="loadMore">
+    
+    <view class="message-item" wx:for="{{messages}}" wx:key="id">
+      <view class="message-header">
+        <view class="message-type type-{{item.message_type}}">
+          {{getTypeText(item.message_type)}}
+        </view>
+        <view class="message-status status-{{item.status}}">
+          {{getStatusText(item.status)}}
+        </view>
+        <text class="message-time">{{formatTime(item.timestamp)}}</text>
+      </view>
+      
+      <view class="message-content">
+        <text class="message-title" wx:if="{{item.title}}">{{item.title}}</text>
+        <text class="message-text">{{item.content}}</text>
+        <view class="message-meta">
+          <text class="message-author">用户ID: {{item.user_id}}</text>
+          <text class="message-stats">👁 {{item.view_count}} 👍 {{item.like_count}}</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="message-actions" wx:if="{{item.status === 'PENDING'}}">
+        <button class="action-btn approve-btn" 
+                bindtap="approveMessage" data-id="{{item.id}}">
+          通过
+        </button>
+        <button class="action-btn reject-btn" 
+                bindtap="rejectMessage" data-id="{{item.id}}">
+          拒绝
+        </button>
+      </view>
+      
+      <view class="message-actions" wx:if="{{item.status === 'APPROVED'}}">
+        <button class="action-btn reject-btn" 
+                bindtap="rejectMessage" data-id="{{item.id}}">
+          撤回
+        </button>
+        <button class="action-btn delete-btn" 
+                bindtap="deleteMessage" data-id="{{item.id}}">
+          删除
+        </button>
+      </view>
+
+      <view class="message-actions" wx:if="{{item.status === 'REJECTED'}}">
+        <button class="action-btn approve-btn" 
+                bindtap="approveMessage" data-id="{{item.id}}">
+          恢复
+        </button>
+        <button class="action-btn delete-btn" 
+                bindtap="deleteMessage" data-id="{{item.id}}">
+          删除
+        </button>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-more" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+
+    <view class="no-more" wx:if="{{!hasMore && messages.length > 0}}">
+      <text>没有更多消息了</text>
+    </view>
+
+    <view class="empty-state" wx:if="{{!loading && messages.length === 0}}">
+      <text class="empty-icon">📭</text>
+      <text class="empty-text">暂无消息</text>
+    </view>
+  </scroll-view>
+</view>

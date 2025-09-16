@@ -1,0 +1,473 @@
+/* 校园墙页面样式 */
+.wall-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 顶部操作栏 */
+.top-bar {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20rpx);
+  padding: 30rpx;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 12rpx 24rpx;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10rpx);
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.tab.active {
+  background: rgba(255, 255, 255, 0.9);
+  color: #667eea;
+  font-weight: bold;
+  transform: translateY(-2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.action-buttons {
+  display: flex;
+  gap: 16rpx;
+  justify-content: flex-end;
+}
+
+.admin-btn {
+  background: linear-gradient(45deg, #ff9800, #f57c00);
+  color: white;
+  border: none;
+  padding: 12rpx 24rpx;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(255, 152, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.admin-btn:hover {
+  transform: translateY(-2rpx);
+  box-shadow: 0 6rpx 16rpx rgba(255, 152, 0, 0.4);
+}
+
+.admin-btn::after {
+  border: none;
+}
+
+.post-btn {
+  background: linear-gradient(45deg, #4facfe, #00f2fe);
+  color: white;
+  border: none;
+  padding: 12rpx 24rpx;
+  border-radius: 30rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(79, 172, 254, 0.3);
+  transition: all 0.3s ease;
+}
+
+.post-btn:hover {
+  transform: translateY(-2rpx);
+  box-shadow: 0 6rpx 16rpx rgba(79, 172, 254, 0.4);
+}
+
+.post-btn::after {
+  border: none;
+}
+
+/* 搜索栏 */
+.search-container {
+  display: flex;
+  gap: 16rpx;
+  padding: 20rpx 30rpx;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10rpx);
+  border-radius: 36rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  border: none;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.search-input:focus {
+  background: white;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.15);
+}
+
+.search-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  padding: 12rpx 24rpx;
+  border-radius: 36rpx;
+  font-size: 24rpx;
+  font-weight: bold;
+  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  transform: translateY(-2rpx);
+  box-shadow: 0 6rpx 16rpx rgba(102, 126, 234, 0.4);
+}
+
+.search-btn::after {
+  border: none;
+}
+
+/* 消息列表 */
+.message-list {
+  padding: 0 30rpx;
+}
+
+.message-item {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20rpx);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.message-item:hover {
+  transform: translateY(-4rpx);
+  box-shadow: 0 12rpx 40rpx rgba(0, 0, 0, 0.15);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.message-type .type-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 20rpx;
+  font-weight: bold;
+  color: white;
+}
+
+.type-general {
+  background: linear-gradient(45deg, #4facfe, #00f2fe);
+}
+
+.type-lost_and_found {
+  background: linear-gradient(45deg, #ff9500, #ff7300);
+}
+
+.type-confession {
+  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+}
+
+.type-help {
+  background: linear-gradient(45deg, #52c41a, #389e0d);
+}
+
+.message-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.message-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+  line-height: 1.4;
+}
+
+.message-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.message-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.meta-item {
+  font-size: 24rpx;
+  color: #666;
+  background: #f5f5f5;
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.message-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stats {
+  display: flex;
+  gap: 20rpx;
+}
+
+.stat-item {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.tags {
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 20rpx;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+  border: 1rpx solid rgba(102, 126, 234, 0.2);
+}
+
+/* 加载和空状态 */
+.loading, .empty {
+  text-align: center;
+  padding: 80rpx 40rpx;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 28rpx;
+}
+
+/* 响应式设计 */
+@media (max-width: 750rpx) {
+  .top-bar {
+    padding: 20rpx;
+  }
+  
+  .filter-tabs {
+    gap: 12rpx;
+  }
+  
+  .tab {
+    padding: 8rpx 16rpx;
+    font-size: 22rpx;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 8rpx;
+  }
+  
+  .search-container {
+    flex-direction: column;
+    gap: 12rpx;
+  }
+  
+  .search-input, .search-btn {
+    width: 100%;
+  }
+  
+  .message-list {
+    padding: 0 20rpx;
+  }
+  
+  .message-item {
+    padding: 24rpx;
+  }
+  
+  .message-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12rpx;
+  }
+}
+
+.post-btn {
+  background-color: #1296db;
+  color: white;
+  border: none;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+/* 搜索栏 */
+.search-container {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+  background-color: white;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.search-input {
+  flex: 1;
+  padding: 16rpx;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  background-color: #fafafa;
+}
+
+.search-btn {
+  background-color: #1296db;
+  color: white;
+  border: none;
+  padding: 8rpx 20rpx;
+  border-radius: 8rpx;
+}
+
+/* 消息列表 */
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.message-item {
+  background-color: white;
+  padding: 30rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.message-item:active {
+  background-color: #f9f9f9;
+  transform: scale(0.98);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.type-tag {
+  padding: 4rpx 12rpx;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: white;
+}
+
+.type-general {
+  background-color: #4CAF50;
+}
+
+.type-lost_and_found {
+  background-color: #FF9800;
+}
+
+.type-confession {
+  background-color: #E91E63;
+}
+
+.type-help {
+  background-color: #2196F3;
+}
+
+.type-announcement {
+  background-color: #9C27B0;
+}
+
+.message-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.message-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+  line-height: 1.4;
+}
+
+.message-content {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+  word-break: break-all;
+}
+
+.message-meta {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 16rpx;
+}
+
+.meta-item {
+  font-size: 24rpx;
+  color: #888;
+  padding: 4rpx 8rpx;
+  background-color: #f0f0f0;
+  border-radius: 8rpx;
+}
+
+.message-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stats {
+  display: flex;
+  gap: 20rpx;
+}
+
+.stat-item {
+  font-size: 24rpx;
+  color: #888;
+}
+
+.tags {
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 20rpx;
+  color: #1296db;
+  background-color: #e3f2fd;
+  padding: 4rpx 8rpx;
+  border-radius: 8rpx;
+}
+
+/* 加载和空状态 */
+.loading, .empty {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: #999;
+  font-size: 28rpx;
+}

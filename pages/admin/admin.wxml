@@ -1,0 +1,87 @@
+<view class="admin-container" wx:if="{{isAdmin}}">
+  <!-- 统计信息 -->
+  <view class="stats-section">
+    <text class="section-title">统计信息</text>
+    <view class="stats-grid">
+      <view class="stat-card">
+        <text class="stat-number">{{statistics.total_count || 0}}</text>
+        <text class="stat-label">总消息数</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-number">{{statistics.pending_count || 0}}</text>
+        <text class="stat-label">待审核</text>
+      </view>
+      <view class="stat-card">
+        <text class="stat-number">{{statistics.approved_count || 0}}</text>
+        <text class="stat-label">已通过</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 管理功能菜单 -->
+  <view class="menu-section">
+    <text class="section-title">管理功能</text>
+    <view class="menu-items">
+      <view class="menu-item" bindtap="goToWallManage">
+        <text class="menu-icon">📝</text>
+        <view class="menu-content">
+          <text class="menu-title">校园墙管理</text>
+          <text class="menu-desc">审核消息、管理内容</text>
+        </view>
+        <text class="menu-arrow">→</text>
+      </view>
+      <view class="menu-item" bindtap="goToSongManage">
+        <text class="menu-icon">🎵</text>
+        <view class="menu-content">
+          <text class="menu-title">点歌管理</text>
+          <text class="menu-desc">审核点歌请求</text>
+        </view>
+        <text class="menu-arrow">→</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 待审核消息列表 -->
+  <view class="pending-section">
+    <view class="section-header">
+      <text class="section-title">待审核消息</text>
+      <text class="view-all" bindtap="goToWallManage">查看全部</text>
+    </view>
+    
+    <view class="message-list" wx:if="{{pendingMessages.length > 0}}">
+      <view wx:for="{{pendingMessages}}" wx:key="id" class="message-item">
+        <view class="message-header">
+          <text class="type-tag type-{{item.message_type}}">{{getTypeText(item.message_type)}}</text>
+          <text class="message-time">{{formatTime(item.timestamp)}}</text>
+        </view>
+        <view class="message-title" wx:if="{{item.title}}">{{item.title}}</view>
+        <view class="message-content">{{item.content}}</view>
+        
+        <view class="action-buttons">
+          <button class="action-btn approve-btn" bindtap="approveMessage" data-id="{{item.id}}" size="mini">
+            通过
+          </button>
+          <button class="action-btn reject-btn" bindtap="rejectMessage" data-id="{{item.id}}" size="mini">
+            拒绝
+          </button>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-state" wx:if="{{pendingMessages.length === 0 && !loading}}">
+      <text>暂无待审核消息</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>
+
+<!-- 非管理员提示 -->
+<view class="no-permission" wx:if="{{!isAdmin && !loading}}">
+  <text class="permission-text">您没有管理员权限</text>
+  <text class="permission-desc">如需管理功能，请联系系统管理员</text>
+  <button class="back-btn" bindtap="goBack" type="primary" size="mini">返回</button>
+</view>

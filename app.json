@@ -2,7 +2,13 @@
   "pages": [
     "pages/songrequest/songrequest",
     "pages/bind/bind",
-    "pages/myrequests/myrequests"
+    "pages/myrequests/myrequests",
+    "pages/wall/wall",
+    "pages/wall-post/wall-post",
+    "pages/wall-detail/wall-detail",
+    "pages/admin/admin",
+    "pages/admin/song-manage",
+    "pages/admin/wall-manage"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -14,26 +20,26 @@
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
   "tabBar": {
-      "selectedColor": "#31869B",
-      "list": [
-          {
-              "pagePath": "pages/bind/bind",
-              "text": "绑定",
-              "iconPath": "assets/imgs/MdiLinkVariant.png",
-              "selectedIconPath": "assets/imgs/MdiLinkVariant.png"
-          },
-          {
-              "pagePath": "pages/songrequest/songrequest",
-              "text": "点歌页",
-              "iconPath": "assets/imgs/MaterialSymbolsSearchRounded.png",
-              "selectedIconPath": "assets/imgs/MaterialSymbolsSearchRounded.png"
-          },
-          {
-              "text": "我的点歌",
-              "pagePath": "pages/myrequests/myrequests",
-              "iconPath": "assets/imgs/StreamlineSharpSongRecommendation.png",
-              "selectedIconPath": "assets/imgs/StreamlineSharpSongRecommendation.png"
-          }
-      ]
+    "selectedColor": "#31869B",
+    "list": [
+      {
+        "pagePath": "pages/bind/bind",
+        "text": "绑定",
+        "iconPath": "assets/imgs/MdiLinkVariant.png",
+        "selectedIconPath": "assets/imgs/MdiLinkVariant.png"
+      },
+      {
+        "pagePath": "pages/songrequest/songrequest",
+        "text": "点歌页",
+        "iconPath": "assets/imgs/MaterialSymbolsSearchRounded.png",
+        "selectedIconPath": "assets/imgs/MaterialSymbolsSearchRounded.png"
+      },
+      {
+        "text": "校园墙",
+        "pagePath": "pages/wall/wall",
+        "iconPath": "assets/imgs/wall.png",
+        "selectedIconPath": "assets/imgs/wall.png"
+      }
+    ]
   }
 }

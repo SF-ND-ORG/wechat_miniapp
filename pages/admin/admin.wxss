@@ -1,0 +1,250 @@
+.admin-container {
+  padding: 30rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* 区块标题 */
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  display: block;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.view-all {
+  font-size: 26rpx;
+  color: #1296db;
+}
+
+/* 统计信息 */
+.stats-section {
+  margin-bottom: 30rpx;
+}
+
+.stats-grid {
+  display: flex;
+  gap: 20rpx;
+}
+
+.stat-card {
+  flex: 1;
+  background-color: white;
+  padding: 30rpx;
+  border-radius: 12rpx;
+  text-align: center;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.stat-number {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #1296db;
+  margin-bottom: 10rpx;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 管理功能菜单 */
+.menu-section {
+  margin-bottom: 30rpx;
+}
+
+.menu-items {
+  background-color: white;
+  border-radius: 12rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  transition: background-color 0.3s;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item:active {
+  background-color: #f9f9f9;
+}
+
+.menu-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.menu-content {
+  flex: 1;
+}
+
+.menu-title {
+  display: block;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.menu-desc {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.menu-arrow {
+  font-size: 30rpx;
+  color: #ccc;
+}
+
+/* 待审核消息 */
+.pending-section {
+  margin-bottom: 30rpx;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.message-item {
+  background-color: white;
+  padding: 30rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.type-tag {
+  padding: 4rpx 12rpx;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: white;
+}
+
+.type-general {
+  background-color: #4CAF50;
+}
+
+.type-lost_and_found {
+  background-color: #FF9800;
+}
+
+.type-confession {
+  background-color: #E91E63;
+}
+
+.type-help {
+  background-color: #2196F3;
+}
+
+.type-announcement {
+  background-color: #9C27B0;
+}
+
+.message-time {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.message-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+  line-height: 1.4;
+}
+
+.message-content {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20rpx;
+  word-break: break-all;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  gap: 20rpx;
+  justify-content: flex-end;
+}
+
+.action-btn {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  border: none;
+}
+
+.approve-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.reject-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+/* 空状态和加载状态 */
+.empty-state, .loading {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 无权限页面 */
+.no-permission {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 60rpx;
+}
+
+.permission-text {
+  font-size: 36rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.permission-desc {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 40rpx;
+  line-height: 1.5;
+}
+
+.back-btn {
+  background-color: #1296db;
+  color: white;
+  border: none;
+  padding: 12rpx 40rpx;
+}
