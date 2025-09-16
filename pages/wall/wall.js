@@ -18,7 +18,7 @@ Page({
 
     checkAdminStatus() {
         app.globalData.request({
-            url: app.globalData.env.API_BASE_URL + '/api/users/me',
+            url: app.globalData.env.API_BASE_URL + '/api/wechat/userinfo',
             success: res => {
                 this.setData({
                     isAdmin: res.data.is_admin || false
