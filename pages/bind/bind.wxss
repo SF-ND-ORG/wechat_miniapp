@@ -114,12 +114,6 @@
   margin-bottom: 16rpx;
 }
 
-.label-icon {
-  width: 32rpx;
-  height: 32rpx;
-  margin-right: 12rpx;
-  filter: opacity(0.7);
-}
 
 .label-text {
   font-size: 28rpx;

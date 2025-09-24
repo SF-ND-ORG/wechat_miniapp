@@ -11,8 +11,11 @@
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "点歌台",
+    "navigationBarTitleText": "学生会功能合集小程序",
     "navigationBarBackgroundColor": "#ffffff"
+  },
+  "useExtendedLib": {
+    "weui":true
   },
   "style": "v2",
   "componentFramework": "glass-easel",

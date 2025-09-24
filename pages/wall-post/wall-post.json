@@ -1,3 +1,6 @@
 {
-    "navigationBarTitleText": "发布消息"
+    "navigationBarTitleText": "发布消息",
+    "usingComponents": {
+      "mp-uploader": "weui-miniprogram/uploader/uploader"
+    }
 }

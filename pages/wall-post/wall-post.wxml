@@ -43,6 +43,9 @@
       <text class="hint">标签用逗号分隔，便于其他同学搜索</text>
     </view>
 
+    <!-- 图片 -->
+    <mp-uploader bindfail="uploadError" bindsuccess="uploadSuccess" select="{{selectFile}}" upload="{{uploadFile}}" files="{{files}}" max-count="5" title="图片上传（可选）" tips="请提供有用图片"></mp-uploader>
+
     <!-- 提交按钮 -->
     <view class="submit-container">
       <button class="submit-btn" formType="submit" type="primary" disabled="{{!content || submitting}}">

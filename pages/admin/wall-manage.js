@@ -77,6 +77,11 @@ Page({
             data: params,
             success: res => {
                 const newMessages = res.data.items || [];
+                for(let i = 0; i < newMessages.length; i++){
+                  newMessages[i].vmessage_type = this.getTypeText(newMessages[i].message_type);
+                  newMessages[i].vtimestamp = this.formatTime(newMessages[i].timestamp);
+                  newMessages[i].vstatus = this.getStatusText(newMessages[i].status);
+                }
                 this.setData({
                     messages: this.data.page === 1 ? newMessages : [...this.data.messages, ...newMessages],
                     hasMore: res.data.has_next || false,

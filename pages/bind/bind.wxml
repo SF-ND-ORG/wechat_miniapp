@@ -21,7 +21,6 @@
       <form bindsubmit="onSubmit" class="bind-form">
         <view class="input-group">
           <view class="input-label">
-            <image class="label-icon" src="/assets/imgs/user-id.png"></image>
             <text class="label-text">学号</text>
           </view>
           <input 
@@ -34,7 +33,6 @@
         
         <view class="input-group">
           <view class="input-label">
-            <image class="label-icon" src="/assets/imgs/user-name.png"></image>
             <text class="label-text">姓名</text>
           </view>
           <input 

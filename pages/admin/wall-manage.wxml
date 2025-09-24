@@ -48,12 +48,12 @@
     <view class="message-item" wx:for="{{messages}}" wx:key="id">
       <view class="message-header">
         <view class="message-type type-{{item.message_type}}">
-          {{getTypeText(item.message_type)}}
+          {{item.vmessage_type}}
         </view>
         <view class="message-status status-{{item.status}}">
-          {{getStatusText(item.status)}}
+          {{item.vstatus}}
         </view>
-        <text class="message-time">{{formatTime(item.timestamp)}}</text>
+        <text class="message-time">{{item.vtimestamp}}</text>
       </view>
       
       <view class="message-content">

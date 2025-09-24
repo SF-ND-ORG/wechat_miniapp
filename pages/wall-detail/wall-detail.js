@@ -11,7 +11,21 @@ Page({
         sendMessage: ''
     },
     onSend() {
-      
+      app.globalData.request({
+        'url': app.globalData.env.API_BASE_URL + '/api/comment/send',
+        method: 'POST',
+        data:{
+          'content': this.data.sendMessage,
+          'wall_id': parseInt(this.data.messageId)
+        },
+        success: res => {
+          wx.showToast({
+            title: '评论成功，等待审核',
+            icon: 'success'
+        });
+        this.setData({'sendMessage':''})
+        }
+      })
       this.loadMessage();
   },
     onSendInput(e) {
@@ -148,7 +162,6 @@ Page({
 
     // 获取类型文本
     getTypeText(type) {
-      console.log(type);
         const typeMap = {
             'general': '普通',
             'lost_and_found': '失物招领',
