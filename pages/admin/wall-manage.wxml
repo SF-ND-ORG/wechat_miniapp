@@ -1,7 +1,5 @@
 <!-- 校园墙管理页面 -->
 <view class="wall-manage-container">
-  
-
   <!-- 统计卡片 -->
   <view class="stats-cards">
     <view class="stat-card">
@@ -59,6 +57,13 @@
       <view class="message-content">
         <text class="message-title" wx:if="{{item.title}}">{{item.title}}</text>
         <text class="message-text">{{item.content}}</text>
+        <view wx:if="{{item.hasimage}}">
+                <t-grid column="{{4}}">
+                    <t-grid-item wx:for="{{item.images}}" wx:for-item="image">
+                        <t-image src='{{image}}' width="36" height="36"></t-image>
+                    </t-grid-item>
+                </t-grid>
+            </view>
         <view class="message-meta">
           <text class="message-author">用户ID: {{item.user_id}}</text>
           <text class="message-stats">👁 {{item.view_count}} 👍 {{item.like_count}}</text>

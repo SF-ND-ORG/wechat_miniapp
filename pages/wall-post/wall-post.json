@@ -1,6 +1,6 @@
 {
     "navigationBarTitleText": "发布消息",
     "usingComponents": {
-      "mp-uploader": "weui-miniprogram/uploader/uploader"
+        "t-upload": "tdesign-miniprogram/upload/upload"
     }
 }

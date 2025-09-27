@@ -81,6 +81,12 @@ Page({
                   newMessages[i].vmessage_type = this.getTypeText(newMessages[i].message_type);
                   newMessages[i].vtimestamp = this.formatTime(newMessages[i].timestamp);
                   newMessages[i].vstatus = this.getStatusText(newMessages[i].status);
+                  newMessages[i].hasimage = newMessages[i].files!=''
+                    let uids = newMessages[i].files.split(',')
+                    newMessages[i].images = []
+                    for (let j = 0; j < uids.length; j++) {
+                        newMessages[i].images.push(app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[j])
+                    }
                 }
                 this.setData({
                     messages: this.data.page === 1 ? newMessages : [...this.data.messages, ...newMessages],

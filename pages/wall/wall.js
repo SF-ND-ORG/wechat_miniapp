@@ -85,10 +85,16 @@ Page({
             data: params,
             success: res => {
                 const newMessages = res.data.items || [];
-                for(let i = 0; i < newMessages.length; i++){
-                  newMessages[i].vmessage_type = this.getTypeText(newMessages[i].message_type);
-                  newMessages[i].vtimestamp = this.formatTime(newMessages[i].timestamp);
-                  newMessages[i].vtags = this.parseTags(newMessages[i].tags);
+                for (let i = 0; i < newMessages.length; i++) {
+                    newMessages[i].vmessage_type = this.getTypeText(newMessages[i].message_type);
+                    newMessages[i].vtimestamp = this.formatTime(newMessages[i].timestamp);
+                    newMessages[i].vtags = this.parseTags(newMessages[i].tags);
+                    newMessages[i].hasimage = newMessages[i].files!=''
+                    let uids = newMessages[i].files.split(',')
+                    newMessages[i].images = []
+                    for (let j = 0; j < uids.length; j++) {
+                        newMessages[i].images.push(app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[j])
+                    }
                 }
                 this.setData({
                     messages: this.data.page === 1 ? newMessages : this.data.messages.concat(newMessages),
@@ -153,7 +159,7 @@ Page({
 
     // 跳转到管理页面
     navigateToAdmin() {
-        wx.navigateTo({ url: '/pages/admin/admin' });
+        wx.navigateTo({ url: '/pages/wall-manage/wall-manage' });
     },
 
     // 获取类型文本
@@ -202,7 +208,7 @@ Page({
     // 跳转到管理员页面
     goToAdmin() {
         wx.navigateTo({
-            url: '/pages/admin/admin'
+            url: '/pages/wall-manage/wall-manage'
         });
     }
 });

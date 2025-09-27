@@ -8,31 +8,48 @@ Page({
         liking: false,
         messageId: null,
         messages: [],
-        sendMessage: ''
+        sendMessage: '',
+        images: [],
+        hasimage: false,
+        showDetail: false,
+        index: 0,
+        srcs:[]
+    },
+    showImg(e) {
+        const id = e.currentTarget.dataset.id;
+        this.setData({
+            showDetail: !this.data.showDetail,
+            index: id
+        })
+    },
+    onClose(e) {
+        this.setData({
+            showDetail: false
+        });
     },
     onSend() {
-      app.globalData.request({
-        'url': app.globalData.env.API_BASE_URL + '/api/comment/send',
-        method: 'POST',
-        data:{
-          'content': this.data.sendMessage,
-          'wall_id': parseInt(this.data.messageId)
-        },
-        success: res => {
-          wx.showToast({
-            title: '评论成功，等待审核',
-            icon: 'success'
-        });
-        this.setData({'sendMessage':''})
-        }
-      })
-      this.loadMessage();
-  },
+        app.globalData.request({
+            'url': app.globalData.env.API_BASE_URL + '/api/comment/send',
+            method: 'POST',
+            data: {
+                'content': this.data.sendMessage,
+                'wall_id': parseInt(this.data.messageId)
+            },
+            success: res => {
+                wx.showToast({
+                    title: '评论成功，等待审核',
+                    icon: 'success'
+                });
+                this.setData({ 'sendMessage': '' })
+            }
+        })
+        this.loadMessage();
+    },
     onSendInput(e) {
-      this.setData({
-        sendMessage: e.detail.value
-      });
-  },
+        this.setData({
+            sendMessage: e.detail.value
+        });
+    },
     onLoad(options) {
         const { id } = options;
         if (id) {
@@ -69,15 +86,26 @@ Page({
         app.globalData.request({
             url: app.globalData.env.API_BASE_URL + `/api/wall/messages/${this.data.messageId}`,
             success: res => {
-              let temp = res.data;
-              temp.vtags = this.parseTags(temp.tags);
-              temp.vmessage_type = this.getTypeText(temp.message_type);
-              temp.vtimestamp = this.formatTime(temp.timestamp);
+                let temp = res.data;
+                temp.vtags = this.parseTags(temp.tags);
+                temp.vmessage_type = this.getTypeText(temp.message_type);
+                temp.vtimestamp = this.formatTime(temp.timestamp);
+                let images = [],srcs = []
+                let uids = temp.files.split(',')
+                for (let i = 0; i < uids.length; i++) {
+                    images.push({
+                        id: i,
+                        src: app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[i]
+                    })
+                    srcs.push(app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[i])
+                }
                 this.setData({
                     message: temp,
-                    loading: false
+                    loading: false,
+                    images: images,
+                    hasimage: temp.files != '',
+                    srcs:srcs
                 });
-                this.setData({realtime:this.formatTime(res.data.timestamp)})
             },
             fail: err => {
                 console.error('加载消息详情失败:', err);
@@ -88,10 +116,10 @@ Page({
             }
         });
         app.globalData.request({
-          url: app.globalData.env.API_BASE_URL + `/api/comment/message?wall_id=${this.data.messageId}`,
+            url: app.globalData.env.API_BASE_URL + `/api/comment/message?wall_id=${this.data.messageId}`,
             success: res => {
                 this.setData({
-                    messages: res.data.items 
+                    messages: res.data.items
                 });
             },
             fail: err => {

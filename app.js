@@ -76,7 +76,7 @@ function request(options) {
                 fail: options.fail,
                 success: (res) => {
                     // 检查是否令牌过期
-                    if (res.statusCode === 401 && res.data.detail === "token已过期，请刷新") {
+                    if (res.statusCode === 401 && (res.data.detail === "token已过期，请刷新"||res.data.detail === "token无效")) {
                         // 尝试使用刷新令牌
                         const refreshToken = wx.getStorageSync('refresh_token');
                         if (refreshToken) {
@@ -114,7 +114,7 @@ function checkBindAndRedirect() {
                 console.log(res.errMsg);
             }
             if (res.data.is_bound) {
-                wx.redirectTo({ url: '/pages/songrequest/songrequest' });
+                wx.redirectTo({ url: '/pages/wall/wall' });
             } else {
                 wx.redirectTo({ url: '/pages/bind/bind' });
             }

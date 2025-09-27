@@ -11,10 +11,10 @@ Page({
         // 检查本地存储或通过API检查绑定状态
         const userInfo = wx.getStorageSync('userInfo');
         if (userInfo && userInfo.student_id) {
-            // 用户已绑定，自动跳转到搜索页
-            wx.redirectTo({
-                url: '/pages/songrequest/songrequest'
-            });
+            // 用户已绑定，自动跳转
+            wx.reLaunch({
+                url: '/pages/wall/wall'
+            })
             return;
         }
 
@@ -26,9 +26,9 @@ Page({
                 if (res.data.success && res.data.data && res.data.data.student_id) {
                     // 用户已绑定，保存到本地存储并跳转
                     wx.setStorageSync('userInfo', res.data.data);
-                    wx.redirectTo({
-                        url: '/pages/songrequest/songrequest'
-                    });
+                    wx.reLaunch({
+                        url: '/pages/wall/wall'
+                    })
                 }
             },
             fail: () => {
@@ -60,9 +60,10 @@ Page({
                         name: name,
                         bindTime: new Date().getTime()
                     });
-
                     setTimeout(() => {
-                        wx.redirectTo({ url: '/pages/songrequest/songrequest' });
+                        wx.reLaunch({
+                            url: '/pages/wall/wall'
+                        })
                     }, 800);
                 }
             },

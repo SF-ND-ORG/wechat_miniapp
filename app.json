@@ -6,7 +6,6 @@
     "pages/myrequests/myrequests",
     "pages/wall-post/wall-post",
     "pages/wall-detail/wall-detail",
-    "pages/admin/admin",
     "pages/admin/wall-manage"
   ],
   "window": {
@@ -14,10 +13,6 @@
     "navigationBarTitleText": "学生会功能合集小程序",
     "navigationBarBackgroundColor": "#ffffff"
   },
-  "useExtendedLib": {
-    "weui":true
-  },
-  "style": "v2",
   "componentFramework": "glass-easel",
   "sitemapLocation": "sitemap.json",
   "lazyCodeLoading": "requiredComponents",
@@ -35,12 +30,6 @@
         "text": "点歌页",
         "iconPath": "assets/imgs/MaterialSymbolsSearchRounded.png",
         "selectedIconPath": "assets/imgs/MaterialSymbolsSearchRounded.png"
-      },
-      {
-        "pagePath": "pages/bind/bind",
-        "text": "绑定",
-        "iconPath": "assets/imgs/MdiLinkVariant.png",
-        "selectedIconPath": "assets/imgs/MdiLinkVariant.png"
       }
     ]
   }
