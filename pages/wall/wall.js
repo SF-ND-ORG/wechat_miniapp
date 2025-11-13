@@ -34,7 +34,7 @@ Page({
             success: res => {
                 if (!res.data.is_bound) {
                     const userInfo = wx.getStorageSync('userInfo');
-                    if(userInfo && userInfo.student_id){
+                    if (userInfo && userInfo.student_id) {
                         wx.clearStorageSync();
                     }
                     wx.redirectTo({ url: '/pages/bind/bind' });
@@ -93,12 +93,12 @@ Page({
                     newMessages[i].vmessage_type = this.getTypeText(newMessages[i].message_type);
                     newMessages[i].vtimestamp = this.formatTime(newMessages[i].timestamp);
                     newMessages[i].vtags = this.parseTags(newMessages[i].tags);
-                    newMessages[i].hasimage = newMessages[i].files!=''
-                    let uids = newMessages[i].files.split(',')
-                    newMessages[i].images = []
-                    for (let j = 0; j < uids.length; j++) {
-                        newMessages[i].images.push(app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[j])
-                    }
+                    const uids = (newMessages[i].files || '').split(',').filter(Boolean)
+                    newMessages[i].hasimage = uids.length > 0
+                    newMessages[i].images = uids.map(uid => app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uid)
+                    const authorName = newMessages[i].author_display_name || newMessages[i].author_nickname || newMessages[i].author_name
+                    newMessages[i].vauthor = authorName || '匿名用户'
+                    newMessages[i].author_avatar = newMessages[i].author_avatar_url || '/assets/imgs/default-avatar.png'
                 }
                 this.setData({
                     messages: this.data.page === 1 ? newMessages : this.data.messages.concat(newMessages),
@@ -215,4 +215,4 @@ Page({
         });
     }
 });
-export {};
+export { };

@@ -1,0 +1,47 @@
+<scroll-view class="privacy-page" scroll-y="true">
+  <view class="ui-card privacy-card">
+    <view class="privacy-header">
+      <text class="privacy-title">学生会功能合集小程序隐私声明</text>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-section__title">1. 信息收集范围</text>
+      <view class="privacy-section__content">
+        <text>• 学号与姓名：用于身份校验。</text>
+        <text>• 微信登录信息：用于账号绑定与身份识别。</text>
+        <text>• 个人资料：包含昵称与自定义头像，仅在个人中心和留言板展示。</text>
+        <text>• 功能数据：如留言内容、点歌记录、点赞等，用于提供相应服务。</text>
+      </view>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-section__title">2. 信息使用目的</text>
+      <view class="privacy-section__content">
+        <text>• 完成身份验证，确保校园服务仅对授权人员开放。</text>
+        <text>• 提供留言墙、点歌、成绩查询等体育节期间业务功能。</text>
+        <text>• 保障社区秩序与安全，进行必要的安全审计与违规处理。</text>
+      </view>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-section__title">3. 信息存储与保护</text>
+      <view class="privacy-section__content">
+        <text>• 服务器部署在经学校授权的环境中，访问需经授权管理员。</text>
+        <text>• 我们采用访问控制、日志审计与速率限制等措施保护数据安全。</text>
+        <text>• 您可以通过管理员联系方式申请数据删除或账号解绑。</text>
+      </view>
+    </view>
+
+    <view class="privacy-section">
+      <text class="privacy-section__title">4. 您的权利</text>
+      <view class="privacy-section__content">
+        <text>• 查询与更正：可在个人中心查看并修改头像、昵称。</text>
+        <text>• 撤回授权：可联系管理员申请解绑。</text>
+      </view>
+    </view>
+
+    <view class="privacy-footer">
+      <text>继续使用本小程序即表示您已阅读并同意本隐私声明。</text>
+    </view>
+  </view>
+</scroll-view>

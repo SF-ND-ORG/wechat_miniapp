@@ -7,7 +7,9 @@
     "pages/wall-post/wall-post",
     "pages/wall-detail/wall-detail",
     "pages/admin/wall-manage",
-    "pages/grade/grade"
+    "pages/grade/grade",
+    "pages/my/profile/profile",
+    "pages/privacy/privacy"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -37,6 +39,12 @@
         "text": "点歌页",
         "iconPath": "assets/imgs/MaterialSymbolsSearchRounded.png",
         "selectedIconPath": "assets/imgs/MaterialSymbolsSearchRounded.png"
+      },
+      {
+        "pagePath": "pages/my/profile/profile",
+        "text": "个人中心",
+        "iconPath": "assets/imgs/profile.png",
+        "selectedIconPath": "assets/imgs/profile.png"
       }
     ]
   }

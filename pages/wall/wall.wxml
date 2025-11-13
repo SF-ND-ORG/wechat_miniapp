@@ -30,8 +30,14 @@
 		<view class="wall-feed">
 			<view wx:for="{{messages}}" wx:key="id" class="wall-card ui-card ui-card--quiet" bindtap="goToDetail" data-id="{{item.id}}">
 				<view class="wall-card__header">
+					<view class="wall-card__author">
+						<image class="wall-card__avatar" src="{{item.author_avatar}}" mode="aspectFill"></image>
+						<view class="wall-card__author-info">
+							<text class="wall-card__author-name">{{item.vauthor}}</text>
+							<text class="wall-card__time">{{item.vtimestamp}}</text>
+						</view>
+					</view>
 					<text class="wall-card__tag type-{{item.message_type}}">{{item.vmessage_type}}</text>
-					<text class="wall-card__time">{{item.vtimestamp}}</text>
 				</view>
 				<view class="wall-card__title" wx:if="{{item.title}}">{{item.title}}</view>
 				<view class="wall-card__content">{{item.content}}</view>

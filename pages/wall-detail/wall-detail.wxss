@@ -14,7 +14,33 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	gap: 20rpx;
+	flex-wrap: wrap;
+}
+
+.wall-detail-hero__author {
+	display: flex;
+	align-items: center;
 	gap: 16rpx;
+}
+
+.wall-detail-hero__avatar {
+	width: 88rpx;
+	height: 88rpx;
+	border-radius: 50%;
+	background: #e2e8f0;
+}
+
+.wall-detail-hero__author-info {
+	display: flex;
+	flex-direction: column;
+	gap: 6rpx;
+}
+
+.wall-detail-hero__name {
+	font-size: 30rpx;
+	font-weight: 600;
+	color: #0f172a;
 }
 
 .wall-detail-hero__tag {
@@ -240,14 +266,8 @@
 	width: 72rpx;
 	height: 72rpx;
 	border-radius: 50%;
-	background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-	color: #ffffff;
-	font-size: 26rpx;
-	font-weight: 600;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	box-shadow: inset 0 -6rpx 12rpx rgba(255, 255, 255, 0.25);
+	background: #e2e8f0;
+	display: block;
 }
 
 .wall-detail-discussion__message-main {

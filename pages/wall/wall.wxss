@@ -135,6 +135,33 @@
 	justify-content: space-between;
 	align-items: center;
 	margin-bottom: 20rpx;
+	gap: 20rpx;
+}
+
+.wall-card__author {
+	display: flex;
+	align-items: center;
+	gap: 16rpx;
+}
+
+.wall-card__avatar {
+	width: 72rpx;
+	height: 72rpx;
+	border-radius: 50%;
+	background: #e2e8f0;
+	display: block;
+}
+
+.wall-card__author-info {
+	display: flex;
+	flex-direction: column;
+	gap: 6rpx;
+}
+
+.wall-card__author-name {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #0f172a;
 }
 
 .wall-card__tag {

@@ -1,0 +1,35 @@
+<scroll-view class="profile-page" scroll-y="true">
+  <view class="ui-card profile-card">
+    <view class="profile-avatar">
+      <image class="profile-avatar__image" src="{{avatarUrl}}" mode="aspectFill"></image>
+      <button class="profile-avatar__button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">更换头像</button>
+    </view>
+
+    <view class="profile-field">
+      <text class="profile-field__label">昵称</text>
+      <input class="profile-field__input" value="{{nickname}}" bindinput="onNicknameInput" placeholder="请输入昵称" maxlength="20" />
+    </view>
+
+    <button class="profile-save" bindtap="onSave" loading="{{saving}}" disabled="{{saving}}">保存</button>
+    <text class="profile-status {{statusError ? 'is-error' : ''}}">{{statusMessage}}</text>
+  </view>
+
+  <view class="ui-card profile-info">
+    <view class="profile-info__row">
+      <text class="profile-info__label">姓名</text>
+      <text class="profile-info__value">{{userInfo.name || '未填写'}}</text>
+    </view>
+    <view class="profile-info__row">
+      <text class="profile-info__label">学号</text>
+      <text class="profile-info__value">{{userInfo.student_id || '未填写'}}</text>
+    </view>
+    <view class="profile-info__row">
+      <text class="profile-info__label">绑定时间</text>
+      <text class="profile-info__value">{{formattedBindTime || '暂无'}}</text>
+    </view>
+    <view class="profile-info__row" wx:if="{{userInfo.is_admin}}">
+      <text class="profile-info__label">身份</text>
+      <text class="profile-info__value is-admin">管理员</text>
+    </view>
+  </view>
+</scroll-view>

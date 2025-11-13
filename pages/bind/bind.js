@@ -40,9 +40,14 @@ Page({
     },
 
     onSubmit(e) {
-        const { student_id, name } = e.detail.value;
+        const { student_id, name, agree_privacy } = e.detail.value;
         if (!student_id || !name) {
             wx.showToast({ title: '请输入完整信息', icon: 'none' });
+            return;
+        }
+        const hasAgreed = Array.isArray(agree_privacy) && agree_privacy.includes('agree');
+        if (!hasAgreed) {
+            wx.showToast({ title: '请先同意隐私声明', icon: 'none' });
             return;
         }
         this.setData({ isSubmitting: true });
@@ -50,7 +55,7 @@ Page({
         app.globalData.request({
             url: app.globalData.env.API_BASE_URL + '/api/wechat/bind',
             method: 'POST',
-            data: { student_id, name },
+            data: { student_id, name, agree_privacy: true },
             success: res => {
                 const msg = res.data.msg || (res.data.success ? "绑定成功" : res.data.detail);
                 wx.showToast({ title: msg, icon: res.data.success ? 'success' : 'none' });
@@ -77,4 +82,4 @@ Page({
         });
     }
 })
-export {};
+export { };

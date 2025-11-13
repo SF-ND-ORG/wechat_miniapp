@@ -28,11 +28,18 @@ Page({
         });
     },
     onSend() {
+        if (!this.data.sendMessage.trim()) {
+            wx.showToast({
+                title: '请输入内容',
+                icon: 'none'
+            });
+            return;
+        }
         app.globalData.request({
             'url': app.globalData.env.API_BASE_URL + '/api/comment/send',
             method: 'POST',
             data: {
-                'content': this.data.sendMessage,
+                'content': this.data.sendMessage.trim(),
                 'wall_id': parseInt(this.data.messageId)
             },
             success: res => {
@@ -90,20 +97,24 @@ Page({
                 temp.vtags = this.parseTags(temp.tags);
                 temp.vmessage_type = this.getTypeText(temp.message_type);
                 temp.vtimestamp = this.formatTime(temp.timestamp);
+                temp.vauthor = temp.author_display_name || temp.author_nickname || temp.author_name || '匿名用户'
+                temp.author_avatar = temp.author_avatar_url || '/assets/imgs/default-avatar.png'
                 let images = [], srcs = []
-                let uids = temp.files.split(',')
+                const fileString = temp.files || ''
+                const uids = fileString ? fileString.split(',').filter(Boolean) : []
                 for (let i = 0; i < uids.length; i++) {
+                    const src = app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[i]
                     images.push({
                         id: i,
-                        src: app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[i]
+                        src
                     })
-                    srcs.push(app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[i])
+                    srcs.push(src)
                 }
                 this.setData({
                     message: temp,
                     loading: false,
                     images: images,
-                    hasimage: temp.files != '',
+                    hasimage: uids.length > 0,
                     srcs: srcs
                 });
             },
@@ -119,15 +130,11 @@ Page({
             url: app.globalData.env.API_BASE_URL + `/api/comment/message?wall_id=${this.data.messageId}`,
             success: res => {
                 const items = (res.data.items || []).map(item => {
-                    const userId = item.user_id;
-                    const hasUserId = userId !== undefined && userId !== null;
-                    const userIdStr = hasUserId ? String(userId) : '';
-                    const badgeTail = userIdStr ? userIdStr.slice(-2).padStart(2, '0') : '访客';
                     return {
                         ...item,
                         vtimestamp: this.formatTime(item.timestamp),
-                        vuser: userIdStr ? `用户 ${userIdStr}` : '匿名用户',
-                        vbadge: userIdStr ? `U${badgeTail}` : badgeTail,
+                        vauthor: item.author_display_name || item.author_nickname || item.author_name || '匿名用户',
+                        author_avatar: item.author_avatar_url || '/assets/imgs/default-avatar.png',
                         isPending: item.status === 'PENDING',
                         isRejected: item.status === 'REJECTED'
                     };

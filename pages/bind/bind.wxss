@@ -68,6 +68,33 @@
 	color: #94a3b8;
 }
 
+.bind-privacy {
+	display: flex;
+	flex-direction: column;
+	gap: 12rpx;
+	font-size: 24rpx;
+	color: #475569;
+}
+
+.bind-privacy__label {
+	display: inline-flex;
+	align-items: center;
+	gap: 12rpx;
+}
+
+.bind-privacy__checkbox {
+	transform: scale(0.9);
+}
+
+.bind-privacy__link {
+	color: #2563eb;
+	font-weight: 600;
+}
+
+.bind-privacy__link::after {
+	content: '';
+}
+
 .bind-submit {
 	height: 96rpx;
 	border-radius: 999rpx;

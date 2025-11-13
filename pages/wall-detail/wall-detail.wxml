@@ -1,8 +1,14 @@
 <scroll-view wx:if="{{message}}" class="ui-page wall-detail-page" scroll-y="true">
     <view class="ui-card wall-detail-hero">
         <view class="wall-detail-hero__meta">
+            <view class="wall-detail-hero__author">
+                <image class="wall-detail-hero__avatar" src="{{message.author_avatar}}" mode="aspectFill"></image>
+                <view class="wall-detail-hero__author-info">
+                    <text class="wall-detail-hero__name">{{message.vauthor}}</text>
+                    <text class="wall-detail-hero__time">{{message.vtimestamp}}</text>
+                </view>
+            </view>
             <text class="wall-detail-hero__tag type-{{message.message_type}}">{{message.vmessage_type}}</text>
-            <text class="wall-detail-hero__time">{{message.vtimestamp}}</text>
         </view>
         <text class="wall-detail-hero__title" wx:if="{{message.title}}">{{message.title}}</text>
     </view>
@@ -77,10 +83,10 @@
         </view>
         <view class="wall-detail-discussion__messages" wx:if="{{messages.length > 0}}">
             <view wx:for="{{messages}}" wx:key="id" class="wall-detail-discussion__message" data-id="{{item.id}}">
-                <view class="wall-detail-discussion__avatar">{{item.vbadge}}</view>
+                <image class="wall-detail-discussion__avatar" src="{{item.author_avatar}}" mode="aspectFill"></image>
                 <view class="wall-detail-discussion__message-main">
                     <view class="wall-detail-discussion__message-head">
-                        <text class="wall-detail-discussion__name">{{item.vuser}}</text>
+                        <text class="wall-detail-discussion__name">{{item.vauthor}}</text>
                         <text class="wall-detail-discussion__time">{{item.vtimestamp}}</text>
                         <text class="wall-detail-discussion__status is-pending" wx:if="{{item.isPending}}">待审核</text>
                         <text class="wall-detail-discussion__status is-rejected" wx:if="{{item.isRejected}}">已拒绝</text>

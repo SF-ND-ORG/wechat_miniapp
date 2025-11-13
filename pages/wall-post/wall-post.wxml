@@ -1,6 +1,6 @@
 <scroll-view class="ui-page wall-post-page" scroll-y="true">
     <view class="ui-card wall-post-hero">
-        <text class="ui-title">发布校园墙消息</text>
+        <text class="ui-title">发布留言板消息</text>
     </view>
 
     <view class="ui-card ui-card--quiet wall-post-form">

@@ -25,6 +25,15 @@
 					type="text"
 					placeholder="请输入真实姓名" />
 			</view>
+			<view class="bind-privacy">
+				<checkbox-group name="agree_privacy" class="bind-privacy__group">
+					<label class="bind-privacy__label">
+						<checkbox value="agree" class="bind-privacy__checkbox" />
+						<text class="bind-privacy__text">我已阅读并同意</text>
+						<navigator url="/pages/privacy/privacy" class="bind-privacy__link">《隐私声明》</navigator>
+					</label>
+				</checkbox-group>
+			</view>
 			<button
 				form-type="submit"
 				class="bind-submit"
