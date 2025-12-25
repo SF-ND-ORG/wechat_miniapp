@@ -29,18 +29,6 @@
         "selectedIconPath": "assets/imgs/wall.png"
       },
       {
-        "pagePath": "pages/grade/grade",
-        "text": "体育节成绩查询",
-        "iconPath": "assets/imgs/IconParkOutlineSport.png",
-        "selectedIconPath": "assets/imgs/IconParkOutlineSport.png"
-      },
-      {
-        "pagePath": "pages/songrequest/songrequest",
-        "text": "点歌页",
-        "iconPath": "assets/imgs/MaterialSymbolsSearchRounded.png",
-        "selectedIconPath": "assets/imgs/MaterialSymbolsSearchRounded.png"
-      },
-      {
         "pagePath": "pages/my/profile/profile",
         "text": "个人中心",
         "iconPath": "assets/imgs/profile.png",

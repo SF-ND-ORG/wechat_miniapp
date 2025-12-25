@@ -75,6 +75,13 @@ function request(options) {
                 },
                 fail: options.fail,
                 success: (res) => {
+                    if(res.statusCode === 429){
+                        wx.showToast({
+                            title: '请求过多请稍后',
+                            icon: 'error'
+                        });
+                        return;
+                    }
                     // 检查是否令牌过期
                     if (res.statusCode === 401 && (res.data.detail === "token已过期，请刷新" || res.data.detail === "token无效")) {
                         // 尝试使用刷新令牌
@@ -104,7 +111,46 @@ function request(options) {
         originalRequest();
     });
 }
+function uploadFile(options) {
+    getOrRefreshToken(token => {
+        const originalRequest = () => {
+            wx.uploadFile({
+                ...options,
+                header: {
+                    ...(options.header || {}),
+                    Authorization: 'Bearer ' + token
+                },
+                fail: options.fail,
+                success: (res) => {
+                    // 检查是否令牌过期
+                    if (res.statusCode === 401 && (res.data.detail === "token已过期，请刷新" || res.data.detail === "token无效")) {
+                        // 尝试使用刷新令牌
+                        const refreshToken = wx.getStorageSync('refresh_token');
+                        if (refreshToken) {
+                            refreshAccessToken(token => {
+                                // 重试原始请求
+                                originalRequest();
+                            });
+                        } else {
+                            // 没有刷新令牌，重新登录
+                            wxLogin(token => {
+                                originalRequest();
+                            });
+                        }
+                    } else {
+                        // 正常响应
+                        if (options.success) {
+                            options.success(res);
+                        }
+                    }
+                },
+                complete: options.complete
+            });
+        };
 
+        originalRequest();
+    });
+}
 // 检查是否已绑定
 function checkBindAndRedirect() {
     request({
@@ -128,8 +174,9 @@ function checkBindAndRedirect() {
 App({
     globalData: {
         env: env,
-        request: request // 导出包装后的请求函数
-    },
+        request: request,
+        uploadFile:uploadFile
+    },// 导出包装后的请求函数
 
     onLaunch() {
         checkBindAndRedirect();

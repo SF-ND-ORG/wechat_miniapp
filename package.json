@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "miniprogram-api-typings": "^4.1.0",
     "tdesign-miniprogram": "^1.10.1"
   },
   "devDependencies": {

@@ -16,7 +16,7 @@ Page({
     },
 
     uploadFile(file) {
-        wx.uploadFile({
+        app.globalData.uploadFile({
             url: app.globalData.env.API_BASE_URL + '/api/resources/image?extension=' + file.url.split('.').at(-1),
             filePath: file.url,
             name: 'file',
@@ -43,15 +43,15 @@ Page({
     handleRemove(e) {
         const { index } = e.detail;
         app.globalData.request({
-            url: app.globalData.env.API_BASE_URL + '/api/resources/image?uid='+this.data.uids[index],
+            url: app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + this.data.uids[index],
             method: 'DELETE',
             success: res => {
-                const {uids,files} = this.data
-                uids.splice(index,1)
-                files.splice(index,1)
+                const { uids, files } = this.data
+                uids.splice(index, 1)
+                files.splice(index, 1)
                 this.setData({
-                    files:files,
-                    uids:uids
+                    files: files,
+                    uids: uids
                 })
             }
         })
@@ -180,4 +180,4 @@ Page({
         });
     }
 });
-export {};
+export { };
