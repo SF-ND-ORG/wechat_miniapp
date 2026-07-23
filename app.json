@@ -29,6 +29,12 @@
         "selectedIconPath": "assets/imgs/wall.png"
       },
       {
+        "pagePath": "pages/songrequest/songrequest",
+        "text": "点歌台",
+        "iconPath": "assets/imgs/Music.png",
+        "selectedIconPath": "assets/imgs/Music.png"
+      },
+      {
         "pagePath": "pages/my/profile/profile",
         "text": "个人中心",
         "iconPath": "assets/imgs/profile.png",

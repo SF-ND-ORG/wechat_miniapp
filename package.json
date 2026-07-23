@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "tdesign-miniprogram": "^1.10.1"
+    "tdesign-miniprogram": "^1.15.3"
   },
   "devDependencies": {
     "typescript": "^5.9.3"

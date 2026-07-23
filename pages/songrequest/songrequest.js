@@ -87,4 +87,3 @@ Page({
     wx.navigateTo({ url: '/pages/myrequests/myrequests' });
   }
 })
-export {};

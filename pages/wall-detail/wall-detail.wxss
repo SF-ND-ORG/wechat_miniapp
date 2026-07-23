@@ -178,6 +178,11 @@
 	color: #ffffff;
 	box-shadow: 0 16rpx 32rpx rgba(37, 99, 235, 0.18);
 }
+.wall-detail-actions__btn_is_liked {
+	background: linear-gradient(135deg, #eb4d25 0%, #f6673b 100%);
+	color: #ffffff;
+	box-shadow: 0 16rpx 32rpx rgba(37, 99, 235, 0.18);
+}
 
 .wall-detail-actions__btn--primary[disabled] {
 	background: rgba(148, 163, 184, 0.6);

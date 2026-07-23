@@ -5,7 +5,7 @@
 				<text class="ui-title">留言板</text>
 			</view>
 			<view class="wall-hero__actions">
-				<button wx:if="{{isAdmin}}" class="wall-btn wall-btn--ghost" bindtap="goToAdmin">管理面板</button>
+				<button wx:if="{{isAdmin}}" class="wall-btn" bindtap="goToAdmin">管理面板</button>
 				<button class="wall-btn wall-btn--primary" bindtap="goToPost">发布消息</button>
 			</view>
 		</view>
@@ -55,7 +55,8 @@
 				<view class="wall-card__footer">
 					<view class="wall-card__stats">
 						<text class="wall-card__stat">👀 {{item.view_count}}</text>
-						<text class="wall-card__stat">👍 {{item.like_count}}</text>
+						<text class="wall-card__stat" wx:if="{{item.is_like}}">❤️ {{item.like_count}}</text>
+                        <text class="wall-card__stat" wx:if="{{!item.is_like}}">🤍 {{item.like_count}}</text>
 					</view>
 					<view class="wall-card__tags" wx:if="{{item.tags}}">
 						<text class="wall-card__chip" wx:for="{{item.vtags}}" wx:key="*this">{{item}}</text>

@@ -164,19 +164,21 @@ Page({
             url: app.globalData.env.API_BASE_URL + `/api/wall/messages/${this.data.messageId}/like`,
             method: 'POST',
             success: res => {
-                // 更新本地数据
                 const updatedMessage = { ...this.data.message };
                 updatedMessage.like_count = res.data.like_count;
-
+                updatedMessage.is_like = res.data.is_like;
+            
                 this.setData({
                     message: updatedMessage,
                     liking: false
                 });
-
-                wx.showToast({
-                    title: '点赞成功',
-                    icon: 'success'
-                });
+                //检测点赞状态
+                if (res.data.is_like) {
+                    wx.showToast({ title: '点赞成功', icon: 'success' });
+                    // 可能还要做其他事情
+                } else {
+                    wx.showToast({ title: '已取消点赞', icon: 'none' });
+                }
             },
             fail: err => {
                 console.error('点赞失败:', err);
@@ -252,4 +254,3 @@ Page({
         }
     }
 });
-export { };

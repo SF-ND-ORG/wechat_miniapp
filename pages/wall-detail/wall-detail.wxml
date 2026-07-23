@@ -64,8 +64,11 @@
     </view>
 
     <view class="ui-card wall-detail-actions">
-        <button class="wall-detail-actions__btn wall-detail-actions__btn--primary" bindtap="onLike" disabled="{{liking}}">
+        <button class="wall-detail-actions__btn wall-detail-actions__btn--primary" bindtap="onLike" disabled="{{liking}}" wx:if="{{!message.is_like}}">
             👍 {{liking ? '点赞中...' : '点赞'}}
+        </button>
+        <button class="wall-detail-actions__btn wall-detail-actions__btn_is_liked" bindtap="onLike" disabled="{{liking}}" wx:if="{{message.is_like}}">
+            👍 {{liking ? '取消点赞中...' : '取消点赞'}}
         </button>
         <button class="wall-detail-actions__btn wall-detail-actions__btn--ghost" wx:if="{{message.contact_info}}" bindtap="copyContact">
             📋 复制联系方式

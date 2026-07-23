@@ -605,4 +605,3 @@ Page({
         return `${year}/${month}/${day} ${hours}:${minutes}`;
     }
 });
-export { };
