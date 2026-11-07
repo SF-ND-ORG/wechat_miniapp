@@ -27,7 +27,17 @@
                 <textarea class="wall-post-textarea" placeholder="请输入内容..." bindinput="onContentInput" value="{{content}}" maxlength="1000" show-confirm-bar="{{false}}" />
                 <text class="wall-post-field__hint">请描述清楚时间、地点、人物等关键信息，便于同学了解。</text>
                 <view class="wall-post-upload">
-                    <t-upload mediaType="{{['video','image']}}" max="{{0}}" files="{{files}}" bind:add="handleAdd" bind:remove="handleRemove"></t-upload>
+                    <view class="wall-post-grid">
+                        <view class="wall-post-grid__item {{file.status === 'loading' ? 'is-loading' : ''}} {{file.status === 'failed' ? 'is-failed' : ''}}" wx:for="{{files}}" wx:key="index" wx:for-item="file" wx:for-index="idx" bindtap="previewImage" data-index="{{idx}}">
+                            <image class="wall-post-grid__img" src="{{file.url}}" mode="aspectFill" />
+                            <view wx:if="{{file.status === 'loading'}}" class="wall-post-grid__mask">上传中</view>
+                            <view wx:if="{{file.status === 'failed'}}" class="wall-post-grid__mask">失败</view>
+                            <view class="wall-post-grid__del" catchtap="handleRemove" data-index="{{idx}}">×</view>
+                        </view>
+                        <view class="wall-post-grid__add" wx:if="{{files.length < maxCount}}" bindtap="chooseImage">
+                            <text class="wall-post-grid__add-icon">+</text>
+                        </view>
+                    </view>
                 </view>
             </view>
 

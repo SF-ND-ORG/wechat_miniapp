@@ -9,52 +9,92 @@ Page({
         tags: '',
         submitting: false,
         files: [],
-        uids: []
-    },
-    handleAdd(e) {
-        e.detail.files.forEach(file => this.uploadFile(file))
+        maxCount: 9
     },
 
-    uploadFile(file) {
+    chooseImage() {
+        const remain = this.data.maxCount - this.data.files.length;
+        if (remain <= 0) return;
+        wx.chooseMedia({
+            count: remain,
+            mediaType: ['image'],
+            sourceType: ['album', 'camera'],
+            success: res => {
+                res.tempFiles.forEach(item => this.uploadFile(item.tempFilePath));
+            }
+        });
+    },
+
+    uploadFile(tempPath) {
+        // 从临时路径安全提取扩展名，仅保留白名单内的图片格式，缺失时默认 png
+        const rawExt = (tempPath.split('.').pop() || '').toLowerCase();
+        const allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
+        const extension = allowed.includes(rawExt) ? rawExt : 'png';
+        // 先放一个 loading 占位，下标保持稳定，避免并发上传乱序
+        const index = this.data.files.length;
+        const files = this.data.files.concat([{ url: tempPath, status: 'loading' }]);
+        this.setData({ files });
         app.globalData.uploadFile({
-            url: app.globalData.env.API_BASE_URL + '/api/resources/image?extension=' + file.url.split('.').at(-1),
-            filePath: file.url,
+            url: app.globalData.env.API_BASE_URL + '/api/resources/image?extension=' + extension,
+            filePath: tempPath,
             name: 'file',
             success: res => {
-                const uid = JSON.parse(res.data).uid
-                this.setData({
-                    uids: [...this.data.uids, uid],
-                    files: [...this.data.files, {
-                        url: app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uid,
-                        status: 'done'
-                    }]
-                })
+                let uid = null;
+                try {
+                    uid = JSON.parse(res.data).uid;
+                } catch (e) {
+                    uid = null;
+                }
+                const next = this.data.files.slice();
+                if (!uid) {
+                    if (next[index]) next[index].status = 'failed';
+                    this.setData({ files: next });
+                    return;
+                }
+                next[index] = {
+                    url: app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + encodeURIComponent(uid),
+                    status: 'done',
+                    uid: uid
+                };
+                this.setData({ files: next });
             },
-            fail: res => {
-                this.setData({
-                    files: [...this.data.files, {
-                        url: file.url,
-                        status: 'failed'
-                    }]
-                })
+            fail: () => {
+                const next = this.data.files.slice();
+                if (next[index]) next[index].status = 'failed';
+                this.setData({ files: next });
             }
-        })
+        });
     },
+
+    previewImage(e) {
+        const index = e.currentTarget.dataset.index;
+        const urls = this.data.files
+            .filter(f => f.status !== 'failed')
+            .map(f => f.url);
+        const current = this.data.files[index] ? this.data.files[index].url : '';
+        if (!urls.length || !current) return;
+        wx.previewImage({ urls, current });
+    },
+
     handleRemove(e) {
-        const { index } = e.detail;
-        app.globalData.request({
-            url: app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + this.data.uids[index],
-            method: 'DELETE',
-            success: res => {
-                const { uids, files } = this.data
-                uids.splice(index, 1)
-                files.splice(index, 1)
-                this.setData({
-                    files: files,
-                    uids: uids
-                })
-            }
-        })
+        const index = e.currentTarget.dataset.index;
+        const file = this.data.files[index];
+        if (!file) return;
+        const applyRemove = () => {
+            const files = this.data.files.slice();
+            files.splice(index, 1);
+            this.setData({ files });
+        };
+        if (file.uid) {
+            app.globalData.request({
+                url: app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + encodeURIComponent(file.uid),
+                method: 'DELETE',
+                success: applyRemove,
+                fail: applyRemove
+            });
+        } else {
+            applyRemove();
+        }
     },
 
     onLoad() {
@@ -150,7 +190,10 @@ Page({
             postData.tags = this.data.tags.trim();
             postData.tags = postData.tags.split('，').join(',');
         }
-        postData.files = this.data.uids.join(',')
+        postData.files = this.data.files
+            .filter(f => f.uid)
+            .map(f => f.uid)
+            .join(',')
         // 发布消息
         app.globalData.request({
             url: app.globalData.env.API_BASE_URL + '/api/wall/messages',

@@ -16,6 +16,13 @@ function getOrRefreshToken(cb) {
     }
 }
 
+// 清除本地令牌并重新登录
+function resetTokensAndLogin(cb) {
+    wx.removeStorageSync('access_token');
+    wx.removeStorageSync('refresh_token');
+    wxLogin(cb);
+}
+
 // 微信登录获取令牌
 function wxLogin(cb) {
     wx.login({
@@ -25,130 +32,138 @@ function wxLogin(cb) {
                 url: env.API_BASE_URL + '/api/wechat/login',
                 data: { code: res.code },
                 success: r => {
+                    const data = r.data || {};
+                    if (!data.access_token) {
+                        console.error('微信登录失败:', data);
+                        cb(undefined);
+                        return;
+                    }
                     // 保存两种令牌（会话存储）
-                    wx.setStorageSync('access_token', r.data.access_token);
-                    wx.setStorageSync('refresh_token', r.data.refresh_token);
-                    cb(r.data.access_token);
+                    wx.setStorageSync('access_token', data.access_token);
+                    wx.setStorageSync('refresh_token', data.refresh_token);
+                    cb(data.access_token);
+                },
+                fail: res => {
+                    console.error('微信登录请求失败:', res.errMsg);
+                    cb(undefined);
                 }
             })
+        },
+        fail: res => {
+            console.error('wx.login 失败:', res.errMsg);
+            cb(undefined);
         }
     })
 }
 
 // 使用刷新令牌获取新的访问令牌
 function refreshAccessToken(refreshToken, cb) {
+    if (!refreshToken) {
+        resetTokensAndLogin(cb);
+        return;
+    }
     wx.request({
         method: "POST",
         url: env.API_BASE_URL + '/api/wechat/refresh',
         data: { refresh_token: refreshToken },
         success: r => {
-            if (r.data.access_token) {
+            const data = r.data || {};
+            if (r.statusCode === 200 && data.access_token) {
                 // 更新两种令牌
-                wx.setStorageSync('access_token', r.data.access_token);
-                wx.setStorageSync('refresh_token', r.data.refresh_token);
-                cb(r.data.access_token);
+                wx.setStorageSync('access_token', data.access_token);
+                wx.setStorageSync('refresh_token', data.refresh_token);
+                cb(data.access_token);
             } else {
                 // 刷新失败，清除旧令牌并重新登录
-                wx.removeStorageSync('access_token');
-                wx.removeStorageSync('refresh_token');
-                wxLogin(cb);
+                resetTokensAndLogin(cb);
             }
         },
         fail: () => {
             // 请求失败，重新登录
-            wx.removeStorageSync('access_token');
-            wx.removeStorageSync('refresh_token');
-            wxLogin(cb);
+            resetTokensAndLogin(cb);
         }
     })
 }
 
-// 包装wx.request，自动处理令牌刷新
-function request(options) {
-    getOrRefreshToken(token => {
-        const originalRequest = () => {
-            wx.request({
-                ...options,
-                header: {
-                    ...(options.header || {}),
-                    Authorization: 'Bearer ' + token
-                },
-                fail: options.fail,
-                success: (res) => {
-                    if(res.statusCode === 429){
-                        wx.showToast({
-                            title: '请求过多请稍后',
-                            icon: 'error'
-                        });
-                        return;
-                    }
-                    // 检查是否令牌过期
-                    if (res.statusCode === 401 && (res.data.detail === "token已过期，请刷新" || res.data.detail === "token无效")) {
-                        // 尝试使用刷新令牌
-                        const refreshToken = wx.getStorageSync('refresh_token');
-                        if (refreshToken) {
-                            refreshAccessToken(token => {
-                                // 重试原始请求
-                                originalRequest();
-                            });
-                        } else {
-                            // 没有刷新令牌，重新登录
-                            wxLogin(token => {
-                                originalRequest();
-                            });
-                        }
-                    } else {
-                        // 正常响应
-                        if (options.success) {
-                            options.success(res);
-                        }
-                    }
-                },
-                complete: options.complete
-            });
-        };
+// 令牌失效时：优先刷新，没有刷新令牌则重新登录
+// 并发请求共用同一次刷新，避免互相覆盖新令牌
+let refreshing = false;
+let refreshWaiters = [];
 
-        originalRequest();
+function handleAuthFailure(retry) {
+    refreshWaiters.push(retry);
+    if (refreshing) return;
+    refreshing = true;
+
+    const done = () => {
+        const waiters = refreshWaiters;
+        refreshWaiters = [];
+        refreshing = false;
+        waiters.forEach(fn => fn());
+    };
+
+    const refreshToken = wx.getStorageSync('refresh_token');
+    if (refreshToken) {
+        refreshAccessToken(refreshToken, done);
+    } else {
+        wxLogin(done);
+    }
+}
+
+// 包装wx.request，自动处理令牌刷新
+function request(options, retried) {
+    getOrRefreshToken(token => {
+        wx.request({
+            ...options,
+            header: {
+                ...(options.header || {}),
+                Authorization: 'Bearer ' + token
+            },
+            fail: options.fail,
+            success: (res) => {
+                if(res.statusCode === 429){
+                    wx.showToast({
+                        title: '请求过多请稍后',
+                        icon: 'error'
+                    });
+                    return;
+                }
+                // 令牌失效时刷新并重试一次，避免死循环
+                if (res.statusCode === 401 && !retried) {
+                    handleAuthFailure(() => request(options, true));
+                    return;
+                }
+                // 正常响应
+                if (options.success) {
+                    options.success(res);
+                }
+            },
+            complete: options.complete
+        });
     });
 }
-function uploadFile(options) {
+function uploadFile(options, retried) {
     getOrRefreshToken(token => {
-        const originalRequest = () => {
-            wx.uploadFile({
-                ...options,
-                header: {
-                    ...(options.header || {}),
-                    Authorization: 'Bearer ' + token
-                },
-                fail: options.fail,
-                success: (res) => {
-                    // 检查是否令牌过期
-                    if (res.statusCode === 401 && (res.data.detail === "token已过期，请刷新" || res.data.detail === "token无效")) {
-                        // 尝试使用刷新令牌
-                        const refreshToken = wx.getStorageSync('refresh_token');
-                        if (refreshToken) {
-                            refreshAccessToken(token => {
-                                // 重试原始请求
-                                originalRequest();
-                            });
-                        } else {
-                            // 没有刷新令牌，重新登录
-                            wxLogin(token => {
-                                originalRequest();
-                            });
-                        }
-                    } else {
-                        // 正常响应
-                        if (options.success) {
-                            options.success(res);
-                        }
-                    }
-                },
-                complete: options.complete
-            });
-        };
-
-        originalRequest();
+        wx.uploadFile({
+            ...options,
+            header: {
+                ...(options.header || {}),
+                Authorization: 'Bearer ' + token
+            },
+            fail: options.fail,
+            success: (res) => {
+                // 令牌失效时刷新并重试一次，避免死循环
+                if (res.statusCode === 401 && !retried) {
+                    handleAuthFailure(() => uploadFile(options, true));
+                    return;
+                }
+                // 正常响应
+                if (options.success) {
+                    options.success(res);
+                }
+            },
+            complete: options.complete
+        });
     });
 }
 // 检查是否已绑定

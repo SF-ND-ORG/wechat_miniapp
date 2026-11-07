@@ -44,6 +44,12 @@ Page({
                 }
             }
         });
+        // 首次进入由 onLoad 加载；之后每次回到主页（如发布/详情返回）自动刷新，无需手动下拉
+        if (this._shown) {
+            this.setData({ page: 1, messages: [], hasMore: true });
+            this.loadMessages();
+        }
+        this._shown = true;
     },
 
     onPullDownRefresh() {
@@ -95,7 +101,7 @@ Page({
                     newMessages[i].vtags = this.parseTags(newMessages[i].tags);
                     const uids = (newMessages[i].files || '').split(',').filter(Boolean)
                     newMessages[i].hasimage = uids.length > 0
-                    newMessages[i].images = uids.map(uid => app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uid)
+                    newMessages[i].images = uids.map(uid => app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + encodeURIComponent(uid))
                     const authorName = newMessages[i].author_display_name || newMessages[i].author_nickname || newMessages[i].author_name
                     newMessages[i].vauthor = authorName || '匿名用户'
                     newMessages[i].author_avatar = newMessages[i].author_avatar_url || '/assets/imgs/default-avatar.png'
@@ -159,6 +165,14 @@ Page({
         wx.navigateTo({
             url: `/pages/wall-detail/wall-detail?id=${id}`
         });
+    },
+
+    // 预览图片
+    previewImage(e) {
+        const images = e.currentTarget.dataset.images || [];
+        const current = e.currentTarget.dataset.src || '';
+        if (!images.length) return;
+        wx.previewImage({ urls: images, current });
     },
 
     // 跳转到管理页面

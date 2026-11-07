@@ -81,6 +81,19 @@
 	margin-top: 8rpx;
 }
 
+.wall-detail-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12rpx;
+}
+
+.wall-detail-thumb {
+	width: 156rpx;
+	height: 156rpx;
+	border-radius: 16rpx;
+	background: #f1f5f9;
+}
+
 .wall-detail-meta {
 	display: flex;
 	flex-direction: column;

@@ -211,6 +211,19 @@
 	margin-bottom: 20rpx;
 }
 
+.wall-card__grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12rpx;
+}
+
+.wall-card__thumb {
+	width: 156rpx;
+	height: 156rpx;
+	border-radius: 16rpx;
+	background: #f1f5f9;
+}
+
 .wall-card__meta {
 	display: flex;
 	flex-wrap: wrap;

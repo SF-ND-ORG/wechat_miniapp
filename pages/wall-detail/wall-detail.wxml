@@ -16,23 +16,11 @@
     <view class="ui-card wall-detail-content">
         <text class="wall-detail-content__text">{{message.content}}</text>
         <view wx:if="{{hasimage}}" class="wall-detail-content__media">
-            <t-grid column="{{4}}">
-                <t-grid-item wx:for="{{images}}" wx:for-item="item" wx:key="id">
-                    <t-image src="{{item.src}}" width="156" height="156" bind:tap="showImg" data-id="{{item.id}}"></t-image>
-                </t-grid-item>
-            </t-grid>
+            <view class="wall-detail-grid">
+                <image wx:for="{{images}}" wx:for-item="item" wx:key="id" class="wall-detail-thumb" src="{{item.src}}" mode="aspectFill" bindtap="showImg" data-index="{{index}}"></image>
+            </view>
         </view>
     </view>
-    <t-image-viewer
-        background-color="white"
-        default-visible="{{false}}"
-        showIndex="{{true}}"
-        visible="{{showDetail}}"
-        images="{{srcs}}"
-        bind:change="onChange"
-        bind:close="onClose"
-        initial-index="{{index}}"
-    ></t-image-viewer>
 
     <view class="ui-card wall-detail-meta" wx:if="{{message.location || message.contact_info}}">
         <view class="wall-detail-meta__row" wx:if="{{message.location}}">

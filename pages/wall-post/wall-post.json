@@ -1,7 +1,4 @@
 {
     "navigationBarTitleText": "发布消息",
-    "usingComponents": {
-        "t-upload": "tdesign-miniprogram/upload/upload",
-        "t-image-viewer": "tdesign-miniprogram/image-viewer/image-viewer"
-    }
+    "usingComponents": {}
 }

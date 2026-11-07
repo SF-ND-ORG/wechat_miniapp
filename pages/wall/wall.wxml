@@ -42,11 +42,9 @@
 				<view class="wall-card__title" wx:if="{{item.title}}">{{item.title}}</view>
 				<view class="wall-card__content">{{item.content}}</view>
 				<view wx:if="{{item.hasimage}}" class="wall-card__media">
-					<t-grid column="{{4}}">
-						<t-grid-item wx:for="{{item.images}}" wx:for-item="image" wx:key="*this">
-							<t-image src="{{image}}" width="156" height="156"></t-image>
-						</t-grid-item>
-					</t-grid>
+					<view class="wall-card__grid">
+						<image wx:for="{{item.images}}" wx:for-item="image" wx:key="*this" class="wall-card__thumb" src="{{image}}" mode="aspectFill" bindtap="previewImage" data-images="{{item.images}}" data-src="{{image}}"></image>
+					</view>
 				</view>
 				<view class="wall-card__meta" wx:if="{{item.location || item.contact_info}}">
 					<text wx:if="{{item.location}}" class="wall-card__meta-item">📍 {{item.location}}</text>

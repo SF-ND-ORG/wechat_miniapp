@@ -57,11 +57,9 @@
 					<text class="wall-manage-card__title" wx:if="{{item.title}}">{{item.title}}</text>
 					<text class="wall-manage-card__content">{{item.content}}</text>
 					<view wx:if="{{item.hasimage}}" class="wall-manage-card__media">
-						<t-grid column="{{4}}">
-							<t-grid-item wx:for="{{item.images}}" wx:key="*this" wx:for-item="image">
-								<t-image src="{{image}}" width="120" height="120"></t-image>
-							</t-grid-item>
-						</t-grid>
+						<view class="wall-manage-grid">
+							<image wx:for="{{item.images}}" wx:key="*this" wx:for-item="image" class="wall-manage-thumb" src="{{image}}" mode="aspectFill" bindtap="previewImage" data-images="{{item.images}}" data-src="{{image}}"></image>
+						</view>
 					</view>
 				</view>
 				<view class="wall-manage-card__meta">

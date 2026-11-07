@@ -160,7 +160,7 @@ Page({
                     message.images = [];
                     if (message.hasimage) {
                         const uids = files.split(',').filter(Boolean);
-                        message.images = uids.map(uid => app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uid);
+                        message.images = uids.map(uid => app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + encodeURIComponent(uid));
                     }
                     return message;
                 });
@@ -188,6 +188,14 @@ Page({
                 if (onComplete) onComplete();
             }
         });
+    },
+
+    // 预览图片
+    previewImage(e) {
+        const images = e.currentTarget.dataset.images || [];
+        const current = e.currentTarget.dataset.src || '';
+        if (!images.length) return;
+        wx.previewImage({ urls: images, current });
     },
 
     switchWallStatus(e) {

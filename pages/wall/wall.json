@@ -2,9 +2,5 @@
     "navigationBarTitleText": "留言板",
     "enablePullDownRefresh": true,
     "onReachBottomDistance": 50,
-    "usingComponents": {
-        "t-grid": "tdesign-miniprogram/grid/grid",
-        "t-grid-item": "tdesign-miniprogram/grid-item/grid-item",
-        "t-image": "tdesign-miniprogram/image/image"
-    }
+    "usingComponents": {}
 }

@@ -11,20 +11,15 @@ Page({
         sendMessage: '',
         images: [],
         hasimage: false,
-        showDetail: false,
-        index: 0,
         srcs: []
     },
     showImg(e) {
-        const id = e.currentTarget.dataset.id;
-        this.setData({
-            showDetail: !this.data.showDetail,
-            index: id
-        })
-    },
-    onClose(e) {
-        this.setData({
-            showDetail: false
+        const index = e.currentTarget.dataset.index;
+        const urls = this.data.srcs || [];
+        if (!urls.length) return;
+        wx.previewImage({
+            urls: urls,
+            current: urls[index] || urls[0]
         });
     },
     onSend() {
@@ -103,7 +98,7 @@ Page({
                 const fileString = temp.files || ''
                 const uids = fileString ? fileString.split(',').filter(Boolean) : []
                 for (let i = 0; i < uids.length; i++) {
-                    const src = app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + uids[i]
+                    const src = app.globalData.env.API_BASE_URL + '/api/resources/image?uid=' + encodeURIComponent(uids[i])
                     images.push({
                         id: i,
                         src
