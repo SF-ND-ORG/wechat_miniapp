@@ -28,6 +28,11 @@
   color: #2563eb;
 }
 
+.profile-avatar__hint {
+  font-size: 22rpx;
+  color: #64748b;
+}
+
 .profile-field {
   display: flex;
   flex-direction: column;

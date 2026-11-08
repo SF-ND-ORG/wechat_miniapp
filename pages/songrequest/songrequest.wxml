@@ -18,7 +18,7 @@
         value="{{searchKeyword}}" />
       <button class="song-search__btn" bindtap="onSearch" disabled="{{!searchKeyword}}">搜索</button>
     </view>
-    <text class="song-search__hint">支持中文与英文关键字，尝试输入歌名或歌手名</text>
+    <text class="song-search__hint">支持中文与英文关键字；点击「试听」可预览歌曲片段</text>
   </view>
 
   <block wx:if="{{results.length > 0}}">
@@ -27,15 +27,27 @@
         <view class="song-card__info">
           <text class="song-card__title">{{item.name}}</text>
           <text class="song-card__artist">{{item.artists}}</text>
+          <text
+            wx:if="{{previewSongId === item.id && previewTrialLabel}}"
+            class="song-card__trial">{{previewTrialLabel}}</text>
         </view>
-        <button
-          class="song-card__action"
-          data-id="{{item.id}}"
-          data-name="{{item.name}}"
-          bindtap="onRequestSong"
-          loading="{{requestingId === item.id}}">
-          {{requestingId === item.id ? '点歌中...' : '点歌'}}
-        </button>
+        <view class="song-card__actions">
+          <button
+            class="song-card__preview {{previewSongId === item.id ? 'is-active' : ''}}"
+            data-id="{{item.id}}"
+            bindtap="onPreviewTap"
+            disabled="{{loadingPreviewId === item.id}}">
+            {{loadingPreviewId === item.id ? '加载中' : (previewSongId === item.id ? (previewPlaying ? '暂停' : '继续') : '试听')}}
+          </button>
+          <button
+            class="song-card__action"
+            data-id="{{item.id}}"
+            data-name="{{item.name}}"
+            bindtap="onRequestSong"
+            loading="{{requestingId === item.id}}">
+            {{requestingId === item.id ? '点歌中...' : '点歌'}}
+          </button>
+        </view>
       </view>
     </view>
   </block>

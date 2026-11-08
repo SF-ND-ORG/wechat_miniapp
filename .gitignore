@@ -1,4 +1,6 @@
 project.config.json
+project.private.config.json
+env/index.js
 node_modules
 miniprogram_npm
 upload.js

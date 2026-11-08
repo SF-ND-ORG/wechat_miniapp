@@ -2,7 +2,8 @@
   <view class="ui-card profile-card">
     <view class="profile-avatar">
       <image class="profile-avatar__image" src="{{avatarUrl}}" mode="aspectFill"></image>
-      <button class="profile-avatar__button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">更换头像</button>
+      <button class="profile-avatar__button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar" disabled="{{saving || avatarUploading}}">更换头像</button>
+      <text class="profile-avatar__hint" wx:if="{{avatarUploading}}">头像上传中...</text>
     </view>
 
     <view class="profile-field">
@@ -10,7 +11,7 @@
       <input class="profile-field__input" value="{{nickname}}" bindinput="onNicknameInput" placeholder="请输入昵称" maxlength="20" />
     </view>
 
-    <button class="profile-save" bindtap="onSave" loading="{{saving}}" disabled="{{saving}}">保存</button>
+    <button class="profile-save" bindtap="onSave" loading="{{saving}}" disabled="{{saving || avatarUploading}}">保存</button>
     <text class="profile-status {{statusError ? 'is-error' : ''}}">{{statusMessage}}</text>
   </view>
 

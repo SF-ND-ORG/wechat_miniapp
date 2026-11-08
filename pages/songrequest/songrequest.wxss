@@ -124,6 +124,50 @@
 	color: #64748b;
 }
 
+.song-card__trial {
+	align-self: flex-start;
+	padding: 4rpx 16rpx;
+	border-radius: 999rpx;
+	background: rgba(37, 99, 235, 0.08);
+	color: #2563eb;
+	font-size: 22rpx;
+	line-height: 1.5;
+}
+
+.song-card__actions {
+	display: flex;
+	align-items: center;
+	gap: 16rpx;
+	flex-shrink: 0;
+}
+
+.song-card__preview {
+	padding: 0 30rpx;
+	height: 70rpx;
+	border-radius: 999rpx;
+	border: 1rpx solid rgba(37, 99, 235, 0.2);
+	background: rgba(37, 99, 235, 0.08);
+	color: #2563eb;
+	font-size: 28rpx;
+	font-weight: 600;
+	line-height: 70rpx;
+}
+
+.song-card__preview::after {
+	border: none;
+}
+
+.song-card__preview.is-active {
+	border-color: transparent;
+	background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+	color: #ffffff;
+	box-shadow: 0 14rpx 28rpx rgba(37, 99, 235, 0.18);
+}
+
+.song-card__preview[disabled] {
+	opacity: 0.6;
+}
+
 .song-card__action {
 	padding: 0 36rpx;
 	height: 70rpx;
@@ -195,8 +239,13 @@
 		align-items: flex-start;
 	}
 
-	.song-card__action {
+	.song-card__actions {
 		width: 100%;
+	}
+
+	.song-card__preview,
+	.song-card__action {
+		flex: 1;
 		justify-content: center;
 	}
 }

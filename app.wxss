@@ -1,5 +1,4 @@
 /**app.wxss - 全局样式**/
-@import 'miniprogram_npm/tdesign-miniprogram/common/style/theme/_index.wxss';
 
 page {
 	background: linear-gradient(180deg, #f7f9fc 0%, #eef2f8 100%);

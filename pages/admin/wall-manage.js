@@ -489,12 +489,14 @@ Page({
         const id = e.currentTarget.dataset.id;
         wx.showModal({
             title: '拒绝理由',
-            content: '请输入拒绝理由（可选）',
+            // 不要把提示语放在 content 里：部分基础库会把 content 当作输入框的初始内容，
+            // 用户不修改直接确认时，提示语就会被当成拒绝理由提交并展示给用户。
+            content: '',
             editable: true,
-            placeholderText: '可填写拒绝原因',
+            placeholderText: '选填，可填写拒绝原因',
             success: res => {
                 if (res.confirm) {
-                    const reason = res.content || '';
+                    const reason = (res.content || '').trim();
                     this.reviewSong(id, 'rejected', reason);
                 }
             }
